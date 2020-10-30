@@ -91,6 +91,22 @@ go
 
 /***** Table No. 8 - Prescription.tblClinic ****/
 
+create table Prescription.tblClinic
+(
+	ClinicID int identity(1,1) not null,
+	ClinicName nvarchar(30) not null,
+	Address1 nvarchar(40) not null,
+	Address2 nvarchar(40) not null,
+	City nvarchar(40) not null,
+	Province nchar(2) not null,
+	PostalCode nvarchar(7) not null,
+	Phone nvarchar(15) not null,
+	constraint pk_tblClinic primary key clustered 
+	(ClinicID asc)
+)
+;
+go
+
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
 create table Prescriptions.tblDoctor
