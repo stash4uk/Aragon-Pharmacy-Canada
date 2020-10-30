@@ -73,7 +73,7 @@ create table Employee.tblEmployeeTraining
     Date date not null, -- The Date field stores the date of the training session. Display the date using the format ##/##/####.
     ClassID int not null, -- Field store numbers with no decimal places. (Foreign key ClassID in  table Employee.tblClass)
 	-- constraint constraint_name constraint_type
-	constraint pk_tblEmployeeTraining primary key clustered -- Clustered primary key
+	constraint pk_tblEmployeeTraining primary key clustered -- Clustered Composite Primary Key
 		(EmpID, Date, ClassID)
 )
 ;
