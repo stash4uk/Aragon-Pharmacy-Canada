@@ -23,6 +23,17 @@ create table Employee.tblClass
 go
 
 /***** Table No. 2 - Employee.tblJobTitle ****/
+create table Employee.tblJobTitle
+(
+	-- column_name data_type constraint_type(s)
+	JobID int not null,
+    Title nvarchar(30),
+	-- constraint constraint_name constraint_type
+	constraint pk_tblJobTitle primary key clustered 
+		(JobID asc)
+)
+;
+go
 
 /***** Table No. 3 - Employee.tblEmployee ****/
 
