@@ -36,6 +36,34 @@ create table Employee.tblJobTitle
 go
 
 /***** Table No. 3 - Employee.tblEmployee ****/
+create table Employee.tblEmployee
+(
+	-- column_name data_type constraint_type(s)
+	EmpID int not null,
+    EmpFirst nvarchar(30) not null,
+    EmpMI nvarchar(2) null,
+    EmpLast nvarchar(30) not null,
+    SIN nchar(11) null,
+    DOB date not null,
+    StartDate date not null,
+    EndDate date null,
+    Address nvarchar(40) not null,
+    City nvarchar(40) not null,
+    Province nchar(2) not null,
+    PostalCode nvarchar(7) not null,
+    JobID int not null,
+    Memo ntext null,
+    Phone nvarchar(15) null,
+    Cell nvarchar(15) null,
+    Salary decimal(15,2) null,
+    HourlyRate decimal(15,2) null,
+    Review date null,
+	-- constraint constraint_name constraint_type
+	constraint pk_tblEmployee primary key clustered 
+		(EmpID asc)
+)
+;
+go
 
 /***** Table No. 4 - Employee.tblEmployeeTraining ****/
 
