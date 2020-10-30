@@ -66,6 +66,18 @@ create table Employee.tblEmployee
 go
 
 /***** Table No. 4 - Employee.tblEmployeeTraining ****/
+create table Employee.tblEmployeeTraining
+(
+	-- column_name data_type constraint_type(s)
+	EmpID int not null,
+    Date date not null,
+    ClassID int not null,
+	-- constraint constraint_name constraint_type
+	constraint pk_tblEmployeeTraining primary key clustered 
+		(EmpID, Date, ClassID)
+)
+;
+go
 
             -- Vladimir Tocari part
 
