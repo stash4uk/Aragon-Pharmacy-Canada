@@ -127,4 +127,24 @@ go
 
 /***** Table No. 11 - Prescription.tblRx ****/
 
+create table Prescription.tblRx
+(
+	PrescriptionID int identity(1,1) not null,
+	DIN nvarchar(8) not null,
+	Quantity decimal(5,2) not null,
+	Unit nvarchar(10) not null,
+	Date date not null,
+	ExpireDate date not null,
+	Refills int not null,
+	AutoRefill nchar(3) not null,
+	RefillsUsed int not null,
+	Instructions nvarchar(50) not null,
+	CustID int not null,
+	DoctorID int not null,
+	constraint pk_tblRx primary key clustered 
+	(PrescriptionID asc)
+)
+;
+go
+
 /***** Table No. 12 - Prescription.tblRefill ****/
