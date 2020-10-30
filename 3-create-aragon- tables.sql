@@ -51,7 +51,7 @@ create table Employee.tblEmployee
     City nvarchar(40) not null, -- City. Fields cannot exceed 40 characters
     Province nchar(2) not null, -- Provinces are abbreviated using two uppercase letters.
     PostalCode nvarchar(7) not null, -- Postal codes in Canada have the following format: uppercase letter, number, uppercase letter, space, number, uppercase letter, number (for example, T6H 8U7)
-    JobID int not null, -- Job identification number
+    JobID int not null, -- Job identification number (Foreign key JobID in  table Employee.tblJobTitle)
     Memo ntext null, -- Memo to store miscellaneous information about the employee, such as being part time or bilingual.
     Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
     Cell nvarchar(15) null, -- Cell Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
@@ -69,9 +69,9 @@ go
 create table Employee.tblEmployeeTraining
 (
 	-- column_name data_type constraint_type(s)
-	EmpID int not null, -- Field store numbers with no decimal places and is foreign key.
+	EmpID int not null, -- Field store numbers with no decimal places. (Foreign key EmpID in  table Employee.tblEmployee)
     Date date not null, -- The Date field stores the date of the training session. Display the date using the format ##/##/####.
-    ClassID int not null, -- Field store numbers with no decimal places and is foreign key.
+    ClassID int not null, -- Field store numbers with no decimal places. (Foreign key ClassID in  table Employee.tblClass)
 	-- constraint constraint_name constraint_type
 	constraint pk_tblEmployeeTraining primary key clustered -- Clustered primary key
 		(EmpID, Date, ClassID)

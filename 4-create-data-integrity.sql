@@ -11,7 +11,25 @@ GO
 
 /***** Table No. 3 - Employee.tblEmployee ****/
 
+alter table Employee.tblEmployee
+	add constraint fk_tblEmployee_tblJobTitle foreign key (JobID)
+		references Employee.tblJobTitle (JobID)
+;
+go
+
 /***** Table No. 4 - Employee.tblEmployeeTraining ****/
+
+alter table Employee.tblEmployeeTraining
+	add constraint fk_tblEmployeeTraining_tblEmployee foreign key (EmpID)
+		references Employee.tblEmployee (EmpID)
+;
+go
+
+alter table Employee.tblEmployeeTraining
+	add constraint fk_tblEmployeeTraining_tblClass foreign key (ClassID)
+		references Employee.tblClass (ClassID)
+;
+go
 
             -- Vladimir Tocari part
 
