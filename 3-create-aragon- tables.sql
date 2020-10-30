@@ -93,6 +93,20 @@ go
 
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
+create table Prescriptions.tblDoctor
+(
+	DoctorID int IDENTITY(1,1) not null,
+	DoctorFirst nvarchar(30) not null,
+	DoctorLast nvarchar(30) not null,
+	Phone nvarchar(15) not null,
+	Cell nvarchar(15) not null,
+	ClinicID int not null,
+	CONSTRAINT pk_tblDoctor primary key clustered 
+	(DoctorID ASC)
+)
+;
+go
+
 /***** Table No. 10 - Prescription.tblDrug ****/
 
 /***** Table No. 11 - Prescription.tblRx ****/
