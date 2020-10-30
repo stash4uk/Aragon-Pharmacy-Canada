@@ -6,6 +6,21 @@ GO
             -- Artem Garanin part
 
 /***** Table No. 1 - Employee.tblClass ****/
+create table Employee.tblClass
+(
+	-- column_name data_type constraint_type(s)
+	ClassID int not null,
+    Description nvarchar(40) not null,
+    Cost decimal(5,2) not null,
+    Renewal int not null,
+    Required nvarchar(5),
+    Provider nvarchar(40),
+	-- constraint constraint_name constraint_type
+	constraint pk_tblClass primary key clustered 
+		(ClassID asc)
+)
+;
+go
 
 /***** Table No. 2 - Employee.tblJobTitle ****/
 
