@@ -91,12 +91,12 @@ City nvarchar(25) not null, -- city
 Province  varchar(2) not null, -- have toconvert to  uppercase letters and cannot enter digits
 PostalCode varchar(7) not null,--
 /*Postal codes in Canada have the following format: uppercase letter, number, uppercase letter, space, number, uppercase letter, number (for example, T6H 8U7). Add properties to the PostalCode field to ensure that data entry into this field is accurate and correctly formatted. You might want to consider using a pattern, such as >L0>L\0>L0*/
-Phone varchar(15) not null, --  phone number
+Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
 Days int null, -- treatment days plan in days
 WebSite varchar(25) null,-- web site address
 constraint check_lowercase_province check(lower(Province)=province), -- lower case constraint for province
 constraint check_notADigit_province check (Province not like '%[^0-9]%'), -- check that entered values is not a digit
-constraint check_notADigit_phone check (Phone not like '%[^0-9]%'), -- check that entered values is not a digit
+constraint check_phone_tblHealthPlan check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
 constraint pk_tblHealthPlan primary key clustered -- Clustered primary key
 (PlanId asc)
 );
@@ -125,7 +125,7 @@ create table Customer.tblCustomer(
 CustID int not null, -- The class identification number, field store numbers with no decimal places.
 CustFirst nvarchar(25) not null, --  Customer first name
 CustLast nvarchar(25) not null, --  Customer last name
-Phone varchar(15) not null, -- Customer phone number
+Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
 DOB date not null, -- Customer date of birth
 Gender varchar(2) not null, --Customer gender
 Balance float null, --Customer balance
@@ -134,7 +134,7 @@ PlanId varchar(25) not null, --
 HouseID int not null, -- it's ID for connect to Customer.tblHousehold table
 HeadHH  bit not null,-- true or false
 Allergies varchar(50) null,-- Customer allergies
-constraint check_notADigit_phone check (Phone not like '%[^0-9]%'), -- check that entered values is not a digit
+constraint check_notADigit_phone check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
 constraint pk_tblCustomer primary key clustered -- Clustered primary key
 (CustID asc)
 );
