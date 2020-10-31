@@ -87,4 +87,36 @@ go
 
 /***** Table No. 11 - Prescription.tblRx ****/
 
+alter table Prescription.tblRx
+	add constraint uq_DIN_tblRx unique (DIN)
+;
+go
+
+alter table Prescription.tblRx
+add constraint ck_Date_tblRx check (Date like '[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
+;
+go
+
+alter table Prescription.tblRx
+add constraint ck_ExpireDate_tblRx check (ExpireDate like '[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
+;
+go
+
+alter table Prescription.tblRx
+	add constraint df_AutoRefill_tblRx default ('No') for AutoRefill
+;
+go
+
+alter table Prescription.tblRx
+	add constraint fk_tblRx_tblCustomer foreign key (CustID)
+		references Customer.tblCustomer (CustID)
+;
+go
+
+alter table Prescription.tblRx
+	add constraint fk_tblRx_tblDoctor foreign key (DoctorID)
+		references Prescription.tblDoctor (DoctorID)
+;
+go
+
 /***** Table No. 12 - Prescription.tblRefill ****/
