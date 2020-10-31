@@ -130,8 +130,8 @@ DOB date not null, -- Customer date of birth
 Gender varchar(2) not null, --Customer gender
 Balance float null, --Customer balance
 ChildproofCap bit not null,-- true or false
-PlanID varchar(25) not null, --
-HouseID int not null, --
+PlanId varchar(25) not null, --
+HouseID int not null, -- it's ID for connect to Customer.tblHousehold table
 HeadHH  bit not null,-- true or false
 Allergies varchar(50) null,-- Customer allergies
 constraint check_notADigit_phone check (Phone not like '%[^0-9]%'), -- check that entered values is not a digit

@@ -37,8 +37,19 @@ go
 
 /***** Table No. 6 - Customer.tblHousehold ****/
 
+alter table Employee.tblEmployee
+	add constraint fk_tblEmployee_tblJobTitle foreign key (JobID)
+		references Employee.tblJobTitle (JobID)
+;
+go
+
 /***** Table No. 7 - Customer.tblCustomer ****/
 
+alter table Customer.tblCustomer
+	add constraint fk_tblCustomer_tblHousehold foreign key (HouseId)
+		references Customer.tblHousehold (HouseId)
+;
+go
 
 
             -- Ihor Stashchuk part
