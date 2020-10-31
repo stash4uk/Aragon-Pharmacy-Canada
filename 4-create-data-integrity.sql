@@ -62,6 +62,22 @@ go
 
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
+alter table Prescription.tblDoctor
+add constraint ck_Phone_tblDoctor check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
+
+alter table Prescription.tblDoctor
+add constraint ck_Cell_tblDoctor check (Cell like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
+
+alter table Prescription.tblDoctor
+	add constraint fk_tblDoctor_tblClinic foreign key (ClinicID)
+		references Prescription.tblClinic (ClinicID)
+;
+go
+
 /***** Table No. 10 - Prescription.tblDrug ****/
 
 /***** Table No. 11 - Prescription.tblRx ****/
