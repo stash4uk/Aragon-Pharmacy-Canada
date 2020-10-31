@@ -174,6 +174,7 @@ create table Prescription.tblRefill
 	PrescriptionID int identity(1,1) not null,
 	RefillDate date not null,
 	EmplID int not null,
+    constraint pk_tblRefill primary key clustered (PrescriptionID, RefillDate)
 )
 ;
 go
