@@ -120,3 +120,9 @@ alter table Prescription.tblRx
 go
 
 /***** Table No. 12 - Prescription.tblRefill ****/
+
+alter table Prescription.tblRefill
+	add constraint fk_tblRefill_tblEmployee foreign key (EmpID)
+		references Employee.tblEmployee (EmpID)
+;
+go
