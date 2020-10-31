@@ -168,3 +168,12 @@ create table Prescription.tblRx
 go
 
 /***** Table No. 12 - Prescription.tblRefill ****/
+
+create table Prescription.tblRefill
+(
+	PrescriptionID int identity(1,1) not null,
+	RefillDate date not null,
+	EmplID int not null,
+)
+;
+go
