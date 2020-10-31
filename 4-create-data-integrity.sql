@@ -80,6 +80,11 @@ go
 
 /***** Table No. 10 - Prescription.tblDrug ****/
 
+alter table Prescription.tblDrug
+	add constraint uq_DIN_tblDrug unique (DIN)
+;
+go
+
 /***** Table No. 11 - Prescription.tblRx ****/
 
 /***** Table No. 12 - Prescription.tblRefill ****/
