@@ -43,6 +43,21 @@ go
 
 /***** Table No. 8 - Prescription.tblClinic ****/
 
+alter table Prescription.tblClinic
+add constraint ck_Province_tblClinic check (Province like '[A-Z][A-Z]')
+;
+go
+
+alter table Prescription.tblClinic
+add constraint ck_PostalCode_tblClinic check (PostalCode like '[A-Z][0-9][A-Z] [0-9][A-Z][0-9]')
+;
+go
+
+alter table Prescription.tblClinic
+add constraint ck_Phone_tblClinic check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
+
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
 /***** Table No. 10 - Prescription.tblDrug ****/
