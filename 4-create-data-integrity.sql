@@ -35,19 +35,24 @@ go
 
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
-/***** Table No. 6 - Customer.tblHousehold ****/
-
 alter table Employee.tblEmployee
-	add constraint fk_tblEmployee_tblJobTitle foreign key (JobID)
-		references Employee.tblJobTitle (JobID)
+	add constraint fk_tblEmployee_tblHealthPlan foreign key (PlanId)
+		references Customer.tblHealthPlan (PlanId)
 ;
 go
 
-/***** Table No. 7 - Customer.tblCustomer ****/
+/***** Table No. 6 - Customer.tblHousehold ****/
 
 alter table Customer.tblCustomer
 	add constraint fk_tblCustomer_tblHousehold foreign key (HouseId)
 		references Customer.tblHousehold (HouseId)
+;
+go
+/***** Table No. 7 - Customer.tblCustomer ****/
+
+alter table Prescription.tblRx
+	add constraint fk_tblRx_tblEmployee foreign key (CustID)
+		references Employee.tblEmployee (CustID)
 ;
 go
 
