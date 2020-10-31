@@ -39,6 +39,8 @@ go
 
 /***** Table No. 7 - Customer.tblCustomer ****/
 
+
+
             -- Ihor Stashchuk part
 
 /***** Table No. 8 - Prescription.tblClinic ****/
