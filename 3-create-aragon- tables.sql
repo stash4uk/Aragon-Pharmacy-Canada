@@ -125,6 +125,26 @@ go
 
 /***** Table No. 10 - Prescription.tblDrug ****/
 
+create table Prescription.tblDrug
+(
+	DIN nvarchar(8) not null,
+	Name nvarchar(30) not null,
+	Generic nchar(3) not null,
+	Description nvarchar(100) not null,
+	Unit nvarchar(10) not null,
+	Dosage nvarchar(10) not null,
+	DosageForm nvarchar(20) not null,
+	Cost decimal(5,2) not null,
+	Price decimal(5,2) not null,
+	Interactions nvarchar(40) not null,
+	PregCategory nchar(1) not null,
+	Supplier nvarchar(100) not null,
+	constraint pk_tblDrug primary key clustered 
+	(DIN asc)
+)
+;
+go
+
 /***** Table No. 11 - Prescription.tblRx ****/
 
 create table Prescription.tblRx
