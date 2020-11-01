@@ -87,6 +87,12 @@ alter table Customer.tblHealthPlan
 constraint ck_phone_tblHealthPlan check (Phone LIKE '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 ;
 go
+
+alter table Customer.tblHealthPlan
+add constraint df_Province_tblHealthPlan default ('QC') for Province
+;
+go
+
 /***** Table No. 6 - Customer.tblHousehold ****/
 alter table Customer.tblHousehold
 constraint ck_Province_tblHousehold check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
