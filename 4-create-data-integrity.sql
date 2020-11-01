@@ -16,13 +16,51 @@ alter table Employee.tblEmployee
 		references Employee.tblJobTitle (JobID)
 ;
 go
-
-
 alter table Employee.tblEmployee
 	add constraint ck_Phone_tblEmployee check (Phone LIKE
     '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 ;
 go
+alter table Employee.tblEmployee
+	add constraint ck_Cell_tblEmployee check (Cell LIKE
+    '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_PostalCode_tblEmployee check (PostalCode LIKE 
+	'[A-Z][0-9][A-Z] [0-9][A-Z][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_Province_tblEmployee check (Province LIKE 
+	'[A-Z][A-Z]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_SIN_tblEmployee check (SIN LIKE 
+	'[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_StartDate_tblEmployee check (StartDate like 
+	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_EndDate_tblEmployee check (EndDate like 
+	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint ck_Review_tblEmployee check (Review like 
+	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
+;
+go
+alter table Employee.tblEmployee
+	add constraint df_Province_tblEmployee default ('QC') for Province
+;
+go
+
 /***** Table No. 4 - Employee.tblEmployeeTraining ****/
 
 alter table Employee.tblEmployeeTraining
@@ -41,28 +79,40 @@ go
 
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
-alter table Employee.tblEmployee
-	add constraint fk_tblEmployee_tblHealthPlan foreign key (PlanId)
-		references Customer.tblHealthPlan (PlanId)
+alter table Customer.tblHealthPlan
+constraint ck_Province_tblHealthPlan check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
+;
+go
+alter table Customer.tblHealthPlan
+constraint ck_phone_tblHealthPlan check (Phone LIKE '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
+/***** Table No. 6 - Customer.tblHousehold ****/
+alter table Customer.tblHousehold
+constraint ck_Province_tblHousehold check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
+;
+go
+alter table Customer.tblHousehold
+add constraint df_Province_tblHousehold default ('QC') for Province
 ;
 go
 
-/***** Table No. 6 - Customer.tblHousehold ****/
-
+/***** Table No. 7 - Customer.tblCustomer ****/
 alter table Customer.tblCustomer
 	add constraint fk_tblCustomer_tblHousehold foreign key (HouseId)
 		references Customer.tblHousehold (HouseId)
 ;
 go
-/***** Table No. 7 - Customer.tblCustomer ****/
 
-alter table Prescription.tblRx
-	add constraint fk_tblRx_tblEmployee foreign key (CustID)
-		references Employee.tblEmployee (CustID)
+alter table Customer.tblCustomer
+add constraint fk_tblCustomer_tblHealthPlan foreign key (PlanId)
+		references Customer.tblHealthPlan (PlanId)
 ;
 go
-
-
+alter table Customer.tblCustomer
+add constraint check_Phone_tblCustomer check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+;
+go
             -- Ihor Stashchuk part
 
 /***** Table No. 8 - Prescription.tblClinic ****/

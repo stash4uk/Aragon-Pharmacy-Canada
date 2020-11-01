@@ -84,39 +84,34 @@ go
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
 create table Customer.tblHealthPlan(
-PlanId varchar(25) not null, --  id plan
+PlanID nvarchar(25) not null, --  id plan
 PlanName nvarchar(25) null, -- name of the plan
 Address nvarchar(25) not null, -- address 
 City nvarchar(25) not null, -- city 
-Province  varchar(2) not null, -- have toconvert to  uppercase letters and cannot enter digits
-PostalCode varchar(7) not null,--
+Province  nvarchar(2) not null, -- have toconvert to  uppercase letters and cannot enter digits
+PostalCode nvarchar(7) not null,--
 /*Postal codes in Canada have the following format: uppercase letter, number, uppercase letter, space, number, uppercase letter, number (for example, T6H 8U7). Add properties to the PostalCode field to ensure that data entry into this field is accurate and correctly formatted. You might want to consider using a pattern, such as >L0>L\0>L0*/
 Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
 Days int null, -- treatment days plan in days
-WebSite varchar(25) null,-- web site address
-constraint check_lowercase_province check(lower(Province)=province), -- lower case constraint for province
-constraint check_notADigit_province check (Province not like '%[^0-9]%'), -- check that entered values is not a digit
-constraint check_phone_tblHealthPlan check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
+WebSite nvarchar(25) null,-- web site address
 constraint pk_tblHealthPlan primary key clustered -- Clustered primary key
 (PlanId asc)
-);
-
+)
+;
 go
 
 /***** Table No. 6 - Customer.tblHousehold ****/
 
 create table Customer.tblHousehold(
-HouseId int not null, -- The class identification number, field store numbers with no decimal places.
+HouseID int not null, -- The class identification number, field store numbers with no decimal places.
 Address nvarchar(25) not null, --
 City  nvarchar(25) not null, -- city
-Province  varchar(2) not null, -- province
-PostalCode varchar(7) not null, -- postal code
-constraint check_lowercase_province check(lower(Province)=province), -- lower case constraint for province
-constraint check_notADigit_province check (Province not like '%[^0-9]%'), -- check that entered values is not a digit
+Province  nvarchar(2) not null, -- province
+PostalCode nvarchar(7) not null, -- postal code
 constraint pk_tblHousehold primary key clustered -- Clustered primary key
-(HouseId asc)
-);
-
+(HouseID asc)
+)
+;
 go
 
 /***** Table No. 7 - Customer.tblCustomer ****/
@@ -127,18 +122,17 @@ CustFirst nvarchar(25) not null, --  Customer first name
 CustLast nvarchar(25) not null, --  Customer last name
 Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
 DOB date not null, -- Customer date of birth
-Gender varchar(2) not null, --Customer gender
-Balance float null, --Customer balance
-ChildproofCap bit not null,-- true or false
-PlanId varchar(25) not null, --
+Gender nvarchar(2) not null, --Customer gender
+Balance decimal(15,2) null, --Customer balance
+ChildproofCap nvarchar(5) not null,-- true or false
+PlanID nvarchar(25) not null, -- foreign key
 HouseID int not null, -- it's ID for connect to Customer.tblHousehold table
-HeadHH  bit not null,-- true or false
+HeadHH  nvarchar(5) not null,-- true or false
 Allergies varchar(50) null,-- Customer allergies
-constraint check_notADigit_phone check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
 constraint pk_tblCustomer primary key clustered -- Clustered primary key
 (CustID asc)
-);
-
+)
+;
 go
 
             -- Ihor Stashchuk part
