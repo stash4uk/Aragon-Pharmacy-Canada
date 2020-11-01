@@ -141,15 +141,15 @@ go
 
 create table Prescription.tblClinic
 (
-	ClinicID int identity(1,1) not null,
-	ClinicName nvarchar(30) not null,
-	Address1 nvarchar(40) not null,
-	Address2 nvarchar(40) not null,
-	City nvarchar(40) not null,
-	Province nchar(2) not null,
-	PostalCode nvarchar(7) not null,
-	Phone nvarchar(15) not null,
-	constraint pk_tblClinic primary key clustered 
+	ClinicID int not null, -- Clinic ID
+	ClinicName nvarchar(30) not null, -- Clinic name
+	Address1 nvarchar(40) not null, -- Clinic first address
+	Address2 nvarchar(40) not null, -- Clinic second address
+	City nvarchar(40) not null, -- Clinic city
+	Province nchar(2) not null, -- Clinic province
+	PostalCode nvarchar(7) not null, -- Clinic postal code
+	Phone nvarchar(15) not null, -- Clinic phone number
+	constraint pk_tblClinic primary key clustered -- Primary key
 	(ClinicID asc)
 )
 ;
@@ -159,14 +159,14 @@ go
 
 create table Prescriptions.tblDoctor
 (
-	DoctorID int IDENTITY(1,1) not null,
-	DoctorFirst nvarchar(30) not null,
-	DoctorLast nvarchar(30) not null,
-	Phone nvarchar(15) not null,
-	Cell nvarchar(15) not null,
-	ClinicID int not null,
+	DoctorID int not null, -- Doctor ID.
+	DoctorFirst nvarchar(30) not null, -- Doctor first name. The field for the doctor’s first name should store 30 characters
+	DoctorLast nvarchar(30) not null, -- Doctor last name. The field for the doctor’s last name should store 30 characters
+	Phone nvarchar(15) not null, -- Doctor phone number. Should store 15 characters. Values formatted with the following format: (###) ###-####. # is a numeric character.
+	Cell nvarchar(15) not null, -- Doctor cell phone number. Should store 15 characters. Values formatted with the following format: (###) ###-####. # is a numeric character.
+	ClinicID int not null, -- Doctor's clinic ID. This is a foreign key to tblClinic
 	CONSTRAINT pk_tblDoctor primary key clustered 
-	(DoctorID ASC)
+	(DoctorID ASC) -- Primary key
 )
 ;
 go
@@ -175,19 +175,19 @@ go
 
 create table Prescription.tblDrug
 (
-	DIN nvarchar(8) not null,
-	Name nvarchar(30) not null,
-	Generic nchar(3) not null,
-	Description nvarchar(100) not null,
-	Unit nvarchar(10) not null,
-	Dosage nvarchar(10) not null,
-	DosageForm nvarchar(20) not null,
-	Cost decimal(5,2) not null,
-	Price decimal(5,2) not null,
-	Interactions nvarchar(40) not null,
-	PregCategory nchar(1) not null,
-	Supplier nvarchar(100) not null,
-	constraint pk_tblDrug primary key clustered 
+	DIN nvarchar(8) not null, -- Drug Identification Number. Unique, eight-digit (numeric characters) value. Not used in calculations
+	Name nvarchar(30) not null, -- Drug name. Does not exceed 30 characters
+	Generic nchar(3) not null, -- Indicates if a drug is a generic. Indicated by selecting a check box. Values are 'yes' and 'no'
+	Description nvarchar(100) not null, -- Drug description. Collects data about the drug, such as contraindications, generic equivalents, and recommended dosage
+	Unit nvarchar(10) not null, -- Drug unit of measure, like pill or bottle. Requires 10 characters
+	Dosage nvarchar(10) not null, -- Drug dosage. Stores information about the drug’s strength and requires 10 characters
+	DosageForm nvarchar(20) not null, -- Unit of measure for the drug strength. Does not exceed 20 characters
+	Cost decimal(5,2) not null, -- One drug unit cost
+	Price decimal(5,2) not null, -- One drug price
+	Interactions nvarchar(40) not null, -- Possible drug interactions and possible reactions
+	PregCategory nchar(1) not null, -- Pregnancy risk category
+	Supplier nvarchar(100) not null, -- Drug supplier
+	constraint pk_tblDrug primary key clustered -- Primary key
 	(DIN asc)
 )
 ;
@@ -197,19 +197,19 @@ go
 
 create table Prescription.tblRx
 (
-	PrescriptionID int identity(1,1) not null,
-	DIN nvarchar(8) not null,
-	Quantity decimal(5,2) not null,
-	Unit nvarchar(10) not null,
-	Date date not null,
-	ExpireDate date not null,
-	Refills int not null,
-	AutoRefill nchar(3) not null,
-	RefillsUsed int not null,
-	Instructions nvarchar(50) not null,
-	CustID int not null,
-	DoctorID int not null,
-	constraint pk_tblRx primary key clustered 
+	PrescriptionID int not null, -- Prescription ID
+	DIN nvarchar(8) not null, -- Drug Identification Number. Unique, eight-digit (numeric characters) value. Not used in calculations
+	Quantity decimal(5,2) not null, -- Amount of medication dispensed. Numeric field that might contain decimal places
+	Unit nvarchar(10) not null, -- Drug unit of measure, like pill or bottle. Requires 10 characters
+	Date date not null, -- Date when prescription is made. hould store two-digit months and days and four-digit years in the format ##/##/####
+	ExpireDate date not null, -- Date when prescription expires. hould store two-digit months and days and four-digit years in the format ##/##/####
+	Refills int not null, -- Number of refills authorized by the prescribing doctor
+	AutoRefill nchar(3) not null, -- Customer’s preference (yes or no) for automatic refills. Default value is 'no'
+	RefillsUsed int not null, -- Number of refills a customer has used
+	Instructions nvarchar(50) not null, -- Medication directions. Does not exceed 50 characters
+	CustID int not null, -- Customer ID. Foreign key in tblCustomer. Numeric
+	DoctorID int not null, -- Doctor ID. Foreign key in tblDoctor. Numeric
+	constraint pk_tblRx primary key clustered -- Primary key
 	(PrescriptionID asc)
 )
 ;
@@ -219,10 +219,10 @@ go
 
 create table Prescription.tblRefill
 (
-	PrescriptionID int identity(1,1) not null,
-	RefillDate date not null,
-	EmpID int not null,
-    constraint pk_tblRefill primary key clustered (PrescriptionID, RefillDate)
+	PrescriptionID int not null, -- Foreign key in tblRx
+	RefillDate date not null, -- Date when a refill was made
+	EmpID int not null, -- Employee ID who made a refill. Foreign key in tblEmployee
+    constraint pk_tblRefill primary key clustered (PrescriptionID, RefillDate) -- Composite primary key
 )
 ;
 go
