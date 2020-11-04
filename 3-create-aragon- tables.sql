@@ -157,7 +157,7 @@ go
 
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
-create table Prescriptions.tblDoctor
+create table Prescription.tblDoctor
 (
 	DoctorID int not null, -- Doctor ID.
 	DoctorFirst nvarchar(30) not null, -- Doctor first name. The field for the doctor’s first name should store 30 characters
