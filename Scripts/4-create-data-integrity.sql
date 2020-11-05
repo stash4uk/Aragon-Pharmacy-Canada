@@ -197,10 +197,22 @@ alter table Prescription.tblRx
 ;
 go
 
+alter table Prescription.tblRx
+    add constraint fk_tblRx_tblDrug foreign key (DIN)
+        references Prescription.tblDrug (DIN)
+;
+go
+
 /***** Table No. 12 - Prescription.tblRefill ****/
 
 alter table Prescription.tblRefill
 	add constraint fk_tblRefill_tblEmployee foreign key (EmpID)
 		references Employee.tblEmployee (EmpID)
+;
+go
+
+alter table Prescription.tblRefill
+    add constraint fk_tblRefill_tblRx foreign key (PrescriptionID)
+        references Prescription.tblRx (PrescriptionID)
 ;
 go
