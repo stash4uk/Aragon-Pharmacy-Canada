@@ -95,7 +95,7 @@ go
 
 /***** Table No. 6 - Customer.tblHousehold ****/
 alter table Customer.tblHousehold
-constraint ck_Province_tblHousehold check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
+add constraint ck_Province_tblHousehold check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
 ;
 go
 alter table Customer.tblHousehold
@@ -213,6 +213,6 @@ go
 
 alter table Prescription.tblRefill
 	add constraint fk_tblRefill_tblRx foreign key (PrescriptionID)
-		references Employee.tblRx (PrescriptionID)
+		references Prescription.tblRx (PrescriptionID)
 ;
 go
