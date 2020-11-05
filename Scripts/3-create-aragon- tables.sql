@@ -83,7 +83,7 @@ go
 
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
-	create table tblHealthPlan(
+	create table Customer.tblHealthPlan(
 PlanID nvarchar(25) not null, --  id plan
 PlanName nvarchar(50) not null, -- name of the plan
 Address nvarchar(50) not null, -- address 
@@ -125,7 +125,7 @@ DOB date not null, -- Customer date of birth
 Gender nvarchar(2) not null, --Customer gender
 Balance decimal(15,2) null, --Customer balance
 ChildproofCap nvarchar(5) not null,-- true or false
-PlanID nvarchar(25) not null, -- foreign key
+PlanID nvarchar(25) null, -- foreign key
 HouseID int not null, -- it's ID for connect to Customer.tblHousehold table
 HeadHH  nvarchar(5) not null,-- true or false
 Allergies varchar(50) null,-- Customer allergies
@@ -135,6 +135,7 @@ constraint pk_tblCustomer primary key clustered -- Clustered primary key
 ;
 go
 
+
             -- Ihor Stashchuk part
 
 /***** Table No. 8 - Prescription.tblClinic ****/
@@ -142,9 +143,9 @@ go
 create table Prescription.tblClinic
 (
 	ClinicID int not null, -- Clinic ID
-	ClinicName nvarchar(30) not null, -- Clinic name
+	ClinicName nvarchar(50) not null, -- Clinic name
 	Address1 nvarchar(40) not null, -- Clinic first address
-	Address2 nvarchar(40) not null, -- Clinic second address
+	Address2 nvarchar(40) null, -- Clinic second address
 	City nvarchar(40) not null, -- Clinic city
 	Province nchar(2) not null, -- Clinic province
 	PostalCode nvarchar(7) not null, -- Clinic postal code
@@ -154,7 +155,6 @@ create table Prescription.tblClinic
 )
 ;
 go
-
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
 create table Prescription.tblDoctor
@@ -184,14 +184,15 @@ create table Prescription.tblDrug
 	DosageForm nvarchar(20) not null, -- Unit of measure for the drug strength. Does not exceed 20 characters
 	Cost decimal(5,2) not null, -- One drug unit cost
 	Price decimal(5,2) not null, -- One drug price
-	Interactions nvarchar(40) not null, -- Possible drug interactions and possible reactions
-	PregCategory nchar(1) not null, -- Pregnancy risk category
+	Fee decimal(5,2) not null, -- One drug price
+	Interactions nvarchar(40) null, -- Possible drug interactions and possible reactions
 	Supplier nvarchar(100) not null, -- Drug supplier
 	constraint pk_tblDrug primary key clustered -- Primary key
 	(DIN asc)
 )
 ;
 go
+
 
 /***** Table No. 11 - Prescription.tblRx ****/
 
