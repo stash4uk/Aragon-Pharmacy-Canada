@@ -80,11 +80,11 @@ go
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
 alter table Customer.tblHealthPlan
-constraint ck_Province_tblHealthPlan check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
+add constraint ck_Province_tblHealthPlan check (Province LIKE '[A-Z][A-Z]') -- check that entered values is not a digit
 ;
 go
 alter table Customer.tblHealthPlan
-constraint ck_phone_tblHealthPlan check (Phone LIKE '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
+add constraint ck_phone_tblHealthPlan check (Phone LIKE '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 ;
 go
 
