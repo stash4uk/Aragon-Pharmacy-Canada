@@ -41,21 +41,19 @@ alter table Employee.tblEmployee
 	'[0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9]')
 ;
 go
-alter table Employee.tblEmployee
+alter table Employee.tblEmployee with NOCHECK
 	add constraint ck_StartDate_tblEmployee check (StartDate like 
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
 
-alter table Employee.tblEmployee
-	drop constraint ck_StartDate_tblEmployee
-;
+
 go
-alter table Employee.tblEmployee
+alter table Employee.tblEmployee with NOCHECK
 	add constraint ck_EndDate_tblEmployee check (EndDate like 
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
 go
-alter table Employee.tblEmployee
+alter table Employee.tblEmployee with NOCHECK
 	add constraint ck_Review_tblEmployee check (Review like 
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
@@ -145,12 +143,12 @@ go
 
 /***** Table No. 9 - Prescription.tblDoctor ****/
 
-alter table Prescription.tblDoctor
+alter table Prescription.tblDoctor with NOCHECK
 add constraint ck_Phone_tblDoctor check (Phone like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 ;
 go
 
-alter table Prescription.tblDoctor
+alter table Prescription.tblDoctor with NOCHECK
 add constraint ck_Cell_tblDoctor check (Cell like '([0-9][0-9][0-9]) [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 ;
 go
@@ -170,17 +168,12 @@ go
 
 /***** Table No. 11 - Prescription.tblRx ****/
 
-alter table Prescription.tblRx
-	add constraint uq_DIN_tblRx unique (DIN)
-;
-go
-
-alter table Prescription.tblRx
+alter table Prescription.tblRx with NOCHECK
 add constraint ck_Date_tblRx check (Date like '[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
 go
 
-alter table Prescription.tblRx
+alter table Prescription.tblRx with NOCHECK
 add constraint ck_ExpireDate_tblRx check (ExpireDate like '[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
 go
