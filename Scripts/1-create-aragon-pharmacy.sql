@@ -22,3 +22,7 @@ CREATE DATABASE Aragon2020
      ) 
 ;
 GO
+
+drop DATABASE Aragon2020
+;
+go

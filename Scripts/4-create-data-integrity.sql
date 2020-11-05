@@ -45,6 +45,10 @@ alter table Employee.tblEmployee
 	add constraint ck_StartDate_tblEmployee check (StartDate like 
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
+
+alter table Employee.tblEmployee
+	drop constraint ck_StartDate_tblEmployee
+;
 go
 alter table Employee.tblEmployee
 	add constraint ck_EndDate_tblEmployee check (EndDate like 
