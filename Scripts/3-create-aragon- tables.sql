@@ -83,17 +83,17 @@ go
 
 /***** Table No. 5 - Customer.tblHealthPlan ****/
 
-create table Customer.tblHealthPlan(
+	create table tblHealthPlan(
 PlanID nvarchar(25) not null, --  id plan
-PlanName nvarchar(25) null, -- name of the plan
-Address nvarchar(25) not null, -- address 
-City nvarchar(25) not null, -- city 
-Province  nvarchar(2) not null, -- have toconvert to  uppercase letters and cannot enter digits
-PostalCode nvarchar(7) not null,--
+PlanName nvarchar(50) not null, -- name of the plan
+Address nvarchar(50) not null, -- address 
+City nvarchar(50) not null, -- city 
+Province  nvarchar(10) not null, -- have toconvert to  uppercase letters and cannot enter digits
+PostalCode nvarchar(10) not null,--
 /*Postal codes in Canada have the following format: uppercase letter, number, uppercase letter, space, number, uppercase letter, number (for example, T6H 8U7). Add properties to the PostalCode field to ensure that data entry into this field is accurate and correctly formatted. You might want to consider using a pattern, such as >L0>L\0>L0*/
 Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
 Days int null, -- treatment days plan in days
-WebSite nvarchar(25) null,-- web site address
+WebSite nvarchar(75) null,-- web site address
 constraint pk_tblHealthPlan primary key clustered -- Clustered primary key
 (PlanId asc)
 )
