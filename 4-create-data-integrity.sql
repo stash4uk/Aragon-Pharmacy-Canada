@@ -211,7 +211,7 @@ alter table Prescription.tblRefill
 ;
 go
 
-alter table Prescription.tblRx
+alter table Prescription.tblRefill
 	add constraint fk_tblRefill_tblRx foreign key (PrescriptionID)
 		references Employee.tblRx (PrescriptionID)
 ;
