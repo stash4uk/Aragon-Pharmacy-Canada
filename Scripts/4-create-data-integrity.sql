@@ -75,6 +75,7 @@ alter table Employee.tblEmployeeTraining
 ;
 go
 
+
             -- Vladimir Tocari part
 
 /***** Table No. 5 - Customer.tblHealthPlan ****/
