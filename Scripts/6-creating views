@@ -6,6 +6,22 @@ GO
 Kim needs quick answers to three questions. First, she needs to know how many pharmacists are listed in the tblEmployee table. 
 Filter the data in the tblEmployee table to answer Kim’s question.*/
 
+create view Employee.PharmacistListView
+as
+select AJT.Title as 'Title', count(EE.EmpID) as 'Number'
+from Employee.tblEmployee as EE
+    inner join Employee.tblJobTitle as AJT
+        on EE.JobID = AJT.JobID
+where AJT.Title = 'Pharmacist'
+group by AJT.Title
+;
+go
+
+select * 
+from Employee.PharmacistListView
+;
+go
+
 /* 2. Create a view and save it as EmployeeListView.
  Next, Kim wants to know how many records in tblEmployee are for pharmacists, owners, or managers. 
  Refilter the data in tblEmployee to answer Kim’s second question.*/
