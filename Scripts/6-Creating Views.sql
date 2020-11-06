@@ -26,6 +26,24 @@ go
  Next, Kim wants to know how many records in tblEmployee are for pharmacists, owners, or managers. 
  Refilter the data in tblEmployee to answer Kim’s second question.*/
 
+create view Employee.EmployeeListView
+as
+select 
+count (E.EmpID) as 'No of employees',
+JT.Title as 'Job Title'
+from Employee.tblEmployee as E
+inner join Employee.tblJobTitle as JT
+on E.JobID = JT.JobID
+where JT.Title in ('Pharmacist', 'Owner', 'Manager')
+group by JT.Title
+;
+go
+
+select *
+from Employee.EmployeeListView
+;
+go
+
 /* 3. Create a view and save it as FirstEmployeeHiredListView. 
 Finally, Kim wants to know who was the first employee hired by Aragon Pharmacy, and who was the most recent. 
 Organize the data in tblEmployee so that you can easily answer Kim’s question.*/
@@ -69,6 +87,24 @@ Kim wants to check the hourly rates paid to employees. List the wages for employ
 paid according to their hourly rate, ranked from highest to lowest, to display the full range of pay for current, 
 non-salaried employees. Also include information that clearly identifies each employee.*/
 
+create view Employee.EmployeeHourlyRateView
+as
+select top 1000
+concat(' ', E.EmpFirst, E.EmpLast) as 'Employee Name',
+JT.Title as 'Job Title', 
+E.HourlyRate as 'Hourly Rate'
+from Employee.tblEmployee as E
+inner join Employee.tblJobTitle as JT
+on E.JobID = JT.JobID
+where E.HourlyRate > 0
+order by E.HourlyRate desc
+;
+go
+
+select * from Employee.EmployeeHourlyRateView
+;
+go
+
 /* 6. Create a view and save it as HourlyRateAnalysisView. Kim mentions that a summary of the hourly rate information 
 would also be helpful as she prepares for her meeting. List only the highest, lowest, 
 and average pay rates for non-salaried employees. Make sure that the average calculation does not include zero values 
@@ -104,6 +140,20 @@ go
 /* 8. Create a view and save it as ReprimandListView. To prepare for employee reviews, 
 Kim asks you to produce a list of all employees who have been reprimanded at least once. 
 (Hint: Look for keywords in the Memo/Comments field.)*/
+
+create view Employee.ReprimandListView
+as
+select
+concat(' ', EmpFirst, EmpLast) as 'Employee Name',
+Memo
+from Employee.tblEmployee
+where Memo like 'Reprimanded%'
+;
+go
+
+select * from Employee.ReprimandListView
+;
+go
 
 /* 9. Create a view and save it as StartDateListView. Kim has analyzed employment data and discovered 
 that those who have been working for one to three years are most likely to accept employment elsewhere. 
