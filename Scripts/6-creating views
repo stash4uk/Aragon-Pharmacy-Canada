@@ -66,6 +66,22 @@ for salaried employees.*/
 so that at least one Spanish-speaking employee is working each shift. Produce a list of current employees at Aragon Pharmacy 
 who speak Spanish.*/
 
+create view Employee.SpeakSpanishView
+as
+select top 1000
+    concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+    EE.Memo as 'Memo'
+from Employee.tblEmployee as EE
+where EE.Memo like '%spanish%'
+order by EE.EmpFirst, EE.EmpLast
+;
+go
+
+select * 
+from Employee.SpeakSpanishView
+;
+go
+
 /* 8. Create a view and save it as ReprimandListView. To prepare for employee reviews, 
 Kim asks you to produce a list of all employees who have been reprimanded at least once. 
 (Hint: Look for keywords in the Memo/Comments field.)*/
