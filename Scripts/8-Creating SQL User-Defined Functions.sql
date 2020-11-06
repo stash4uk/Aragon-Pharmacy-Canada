@@ -58,6 +58,36 @@ Because Kim will continue to use this view for other classes as they become outd
 so that it prompts her for the necessary criteria (parameter) before running. 
 Defibrillator Use certifications before 1/1/2017 are no longer valid.*/
 
+if OBJECT_ID('Employee.ObsoleteClassesFn', 'IF') is not null
+	drop function Employee.ObsoleteClassesFn
+;
+go
+
+create function Employee.ObsoleteClassesFn
+(
+	@Date as datetime
+)
+returns table
+as
+return  (select
+           EET.EmpID,
+           EET.Date,
+           EET.ClassID,
+           EC.Description
+        from Employee.tblEmployeeTraining as EET
+            inner join Employee.tblClass as EC
+                on EET.ClassID = EC.ClassID
+        where EC.Description = 'Defibrillator Use'
+        and datediff(day, @Date, EET.Date) < 0
+        )
+;
+go 
+
+select * 
+from Employee.ObsoleteClassesFn('2017-01-01')
+;
+go
+
 /* 5. Create a function and save as DeleteClassesView. 
 Verify that tblEmployeeTrainingHistory includes all the obsolete classes. Delete the now archived records from tblEmployeeTraining. 
 As with qryObsoleteClasses, Kim will continue to use this query to remove obsolete records after they’ve been archived. 
