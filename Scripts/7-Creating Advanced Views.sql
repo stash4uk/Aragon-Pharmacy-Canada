@@ -54,12 +54,13 @@ and child CPR and in using defibrillators. Kim asks you to identify employees wh
 Kim also needs to list all employees and the classes they have taken. The results should include current employees 
 who have not attended training as well as those who have.*/
 
-CREATE VIEW [Employee.EmployeeTrainingView] AS 
-select Employee.tblEmployee.EmpID, Employee.tblEmployee.EmpFirst, Employee.tblEmployee.EmpLast, Employee.tblEmployeeTraining.classId,
-Employee.tblClass.Description
-from ((Employee.tblEmployeeTraining
- right OUTER join Employee.tblEmployee on Employee.tblEmployeeTraining.EmpID = Employee.tblEmployee.EmpID)
- LEFT OUTER join Employee.tblClass on Employee.tblEmployeeTraining.classId = Employee.tblClass.classId)
+CREATE VIEW [Employee.EmployeeTrainingView] 
+AS 
+select EE.EmpID as 'Employee ID', EE.EmpFirst as 'First Name', EE.EmpLast as 'Last Name', coalesce(EET.classId, '0') as 'Class ID',
+coalesce(EC.Description, 'Not attended') as 'Class Description'
+from ((Employee.tblEmployeeTraining as EET
+right join Employee.tblEmployee as EE on EET.EmpID = EE.EmpID)
+left join Employee.tblClass as EC on EET.classId = EC.classId)
  ;
  go
 
@@ -98,15 +99,17 @@ and average hourly rates for each job category. Provide this information for her
 
 CREATE VIEW [Employee.MaxMinAvgHourlyRate] AS 
 select
-max(Employee.tblEmployee.HourlyRate) as 'Max hourly rate',
-min(Employee.tblEmployee.HourlyRate) as 'Min hourly rate',
-AVG(Employee.tblEmployee.HourlyRate) as 'Average pay rates',
-Employee.tblJobTitle.Title
-from Employee.tblEmployee 
-inner join Employee.tblJobTitle  on Employee.tblEmployee.JobID = Employee.tblJobTitle.JobID
-group by Employee.tblJobTitle.Title
+EE.JobID as 'Job ID',
+EJT.Title as 'Job Title',
+max(EE.HourlyRate) as 'Max hourly rate',
+min(EE.HourlyRate) as 'Min hourly rate',
+AVG(EE.HourlyRate) as 'Average hourly rate'
+from Employee.tblEmployee as EE
+inner join Employee.tblJobTitle as EJT   on EE.JobID = EJT.JobID
+group by EE.JobID, EJT.Title
 ;
 go
+
 /* 7. Create a view and save it as EmployeeAge. 
 Mai is considering offering life insurance as an employee benefit and needs to know the current age of all employees. 
 Provide this information for her. Be certain to provide an appropriate name 
