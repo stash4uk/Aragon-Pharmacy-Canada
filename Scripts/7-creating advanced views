@@ -8,7 +8,34 @@ Kim wants to identify employees who live in the same neighborhood in Montreal
 so they can create carpools and share rides to work. In Montreal, the postal codes roughly correspond to neighborhood. 
 Prepare a list of employees who live in the same neighborhood so that Kim can create a list of employees 
 who can share rides to work.*/
+create view Employee.DuplicatePostalCodesView
+as
+select concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+EE.PostalCode
+from Employee.tblEmployee as EE
+where EE.PostalCode
+in  (select PostalCode
+    from Employee.tblEmployee
+    group by PostalCode
+    having count(PostalCode) > 1)
+group by EE.PostalCode, EE.EmpFirst, EE.EmpMI, EE.EmpLast
+;
+go
 
+--Version 2. Duplicate first 3 character of the Postal code
+create view Employee.DuplicatePostalCodesV2View
+as
+select concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+EE.PostalCode
+from Employee.tblEmployee as EE
+where left(EE.PostalCode, 3) 
+in  (select left(PostalCode, 3)
+    from Employee.tblEmployee
+    group by left(PostalCode, 3)
+    having count(left(PostalCode, 3)) > 1)
+group by EE.PostalCode, EE.EmpFirst, EE.EmpMI, EE.EmpLast
+;
+go
 /* 2. Create a view and save it as NoTrainingView. 
 A new policy at Aragon Pharmacy is that all employees must acquire and maintain certifications in adult, infant, 
 and child CPR and in using defibrillators. Kim asks you to identify employees who have not completed any certification training.*/
