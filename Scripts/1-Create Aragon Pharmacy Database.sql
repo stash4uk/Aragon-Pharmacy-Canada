@@ -3,6 +3,10 @@ USE master
 ;
 GO -- include end of the batch marker
 
+drop DATABASE Aragon2020
+;
+go
+
 CREATE DATABASE Aragon2020
  ON PRIMARY
  ( 
@@ -22,7 +26,3 @@ CREATE DATABASE Aragon2020
      ) 
 ;
 GO
-
-drop DATABASE Aragon2020
-;
-go

@@ -1,0 +1,4 @@
+-- switch to the Aragon2020 database
+USE Aragon2020
+;
+GO

@@ -70,7 +70,7 @@ from Employee.tblEmployeeTraining as EET
     inner join Employee.tblEmployee as EE
         on EET.EmpID = EE.EmpID
 where EC.Description in ('Adult CPR','Child/Infant CPR','Defibrillator Use')
-and abs(datediff(month, EEt.Date, GETDATE())) > 60
+and abs(datediff(month, EET.Date, GETDATE())) > 60
 ;
 go
 
