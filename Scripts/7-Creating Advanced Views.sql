@@ -54,7 +54,7 @@ and child CPR and in using defibrillators. Kim asks you to identify employees wh
 Kim also needs to list all employees and the classes they have taken. The results should include current employees 
 who have not attended training as well as those who have.*/
 
-CREATE VIEW [EmployeeTrainingView] AS 
+CREATE VIEW [Employee.EmployeeTrainingView] AS 
 select Employee.tblEmployee.EmpID, Employee.tblEmployee.EmpFirst, Employee.tblEmployee.EmpLast, Employee.tblEmployeeTraining.classId,
 Employee.tblClass.Description
 from ((Employee.tblEmployeeTraining
@@ -94,7 +94,7 @@ for their work. List the top five wage earners of all the current non-salaried e
 To prepare for employee reviews, Kim needs to calculate the minimum, maximum, 
 and average hourly rates for each job category. Provide this information for her.*/
 
-CREATE VIEW [MaxMinAvgHourlyRate] AS 
+CREATE VIEW [Employee.MaxMinAvgHourlyRate] AS 
 select
 max(Employee.tblEmployee.HourlyRate) as 'Max hourly rate',
 min(Employee.tblEmployee.HourlyRate) as 'Min hourly rate',
