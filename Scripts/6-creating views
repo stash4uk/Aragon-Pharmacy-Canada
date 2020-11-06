@@ -34,6 +34,22 @@ Organize the data in tblEmployee so that you can easily answer Kim’s question.
 To help Kim call employees when she needs a substitute, create an alphabetical phone list 
 of Aragon employees and their phone numbers.*/
 
+create view Employee.EmployeeListView
+as
+select top 1000
+    concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+    EE.Phone as 'Phone Number',
+    EE.Cell as 'Cell Phone Number'
+from Employee.tblEmployee as EE
+order by EE.EmpFirst, EE.EmpLast
+;
+go
+
+select * 
+from Employee.EmployeeListView
+;
+go
+
 /* 5. Create a view and save it as EmployeeHourlyRateView. 
 Kim is planning to meet with Mai Yan the manager of Aragon Pharmacy, 
 to review the wages paid to employees so they can budget for upcoming pay raises. 
