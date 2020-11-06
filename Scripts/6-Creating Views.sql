@@ -78,6 +78,8 @@ CREATE VIEW [Employee.HourlyRateAnalysisView] AS
 select max(HourlyRate) as 'Max hourly rate',
 min(HourlyRate) as 'Min hourly rate', AVG(HourlyRate) as 'Average pay rates'
 from Employee.tblEmployee where HourlyRate > 0
+;
+go
 
 /* 7. Create a view and save it as SpeakSpanishView. Kim wants to schedule employees 
 so that at least one Spanish-speaking employee is working each shift. Produce a list of current employees at Aragon Pharmacy 
@@ -110,6 +112,9 @@ ranked so the most recent start date is first.*/
 
 
 CREATE VIEW [Employee.StartDateListView] AS 
-select EmpID, EmpFirst, EmpLast, StartDate, DATEDIFF (MONTH, '2019/01/01', '2020/01/01') as 'Worked Months'
+select EmpID, EmpFirst, EmpLast, StartDate 
 from Employee.tblEmployee
+where StartDate between '2019/01/01' and  '2020/01/01'
 order by StartDate desc
+;
+go

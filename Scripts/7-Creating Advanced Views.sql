@@ -60,6 +60,8 @@ Employee.tblClass.Description
 from ((Employee.tblEmployeeTraining
  right OUTER join Employee.tblEmployee on Employee.tblEmployeeTraining.EmpID = Employee.tblEmployee.EmpID)
  LEFT OUTER join Employee.tblClass on Employee.tblEmployeeTraining.classId = Employee.tblClass.classId)
+ ;
+ go
 
 /* 4. Create a view and save it as UpToDateView. 
 Kim also needs to identify employees whose CPR or defibrillator certification has expired, 
@@ -103,7 +105,8 @@ Employee.tblJobTitle.Title
 from Employee.tblEmployee 
 inner join Employee.tblJobTitle  on Employee.tblEmployee.JobID = Employee.tblJobTitle.JobID
 group by Employee.tblJobTitle.Title
-
+;
+go
 /* 7. Create a view and save it as EmployeeAge. 
 Mai is considering offering life insurance as an employee benefit and needs to know the current age of all employees. 
 Provide this information for her. Be certain to provide an appropriate name 
