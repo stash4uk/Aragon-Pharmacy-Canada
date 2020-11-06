@@ -30,6 +30,18 @@ go
 Finally, Kim wants to know who was the first employee hired by Aragon Pharmacy, and who was the most recent. 
 Organize the data in tblEmployee so that you can easily answer Kim’s question.*/
 
+CREATE VIEW [FirstEmployeeHiredListView] AS 
+select concat_ws(' ', EmpFirst, EmpMI + '.', EmpLast) as 'Employee', StartDate as 'Hired date'
+from Employee.tblEmployee
+where StartDate = (select top 1 StartDate
+from Employee.tblEmployee
+order by StartDate asc)
+or StartDate = (select top 1 StartDate
+from Employee.tblEmployee
+order by StartDate desc)
+;
+go
+
 /* 4. Create a view and save it as EmployeePhoneListView. 
 To help Kim call employees when she needs a substitute, create an alphabetical phone list 
 of Aragon employees and their phone numbers.*/
@@ -62,6 +74,11 @@ would also be helpful as she prepares for her meeting. List only the highest, lo
 and average pay rates for non-salaried employees. Make sure that the average calculation does not include zero values 
 for salaried employees.*/
 
+CREATE VIEW [HourlyRateAnalysisView] AS 
+select max(HourlyRate) as 'Max hourly rate',
+min(HourlyRate) as 'Min hourly rate', AVG(HourlyRate) as 'Average pay rates'
+from Employee.tblEmployee where HourlyRate > 0
+
 /* 7. Create a view and save it as SpeakSpanishView. Kim wants to schedule employees 
 so that at least one Spanish-speaking employee is working each shift. Produce a list of current employees at Aragon Pharmacy 
 who speak Spanish.*/
@@ -90,3 +107,9 @@ Kim asks you to produce a list of all employees who have been reprimanded at lea
 that those who have been working for one to three years are most likely to accept employment elsewhere. 
 Kim asks you to identify employees who started working between January 1, 2019 and January 1, 2020, 
 ranked so the most recent start date is first.*/
+
+
+CREATE VIEW [StartDateListView] AS 
+select EmpID, EmpFirst, EmpLast, StartDate, DATEDIFF (MONTH, '2019/01/01', '2020/01/01') as 'Worked Months'
+from Employee.tblEmployee
+order by StartDate desc
