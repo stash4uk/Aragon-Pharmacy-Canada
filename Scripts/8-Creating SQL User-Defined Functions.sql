@@ -9,6 +9,34 @@ to analyze the annual cost of training to determine how much to budget for train
 She asks you to provide summary data for the costs by year for classes. The results you create 
 should clearly compare the total annual costs of training classes and the annual costs per class.*/
 
+if OBJECT_ID('Employee.ClassCostAnalysisFn', 'IF') is not null
+	drop function Employee.ClassCostAnalysisFn
+;
+go
+
+create function Employee.ClassCostAnalysisFn
+(
+	@Year as datetime
+)
+returns table
+as
+return  (select
+            coalesce(EC.Description, 'Total Annual Costs') as 'Class',
+            sum(EC.Cost) as 'Annual Cost'
+        from Employee.tblEmployeeTraining as EET
+            inner join Employee.tblClass as EC
+                on EET.ClassID = EC.ClassID
+        where YEAR(EET.Date) = @Year
+        group by EC.Description
+        with ROLLUP)
+;
+go
+
+select * 
+from Employee.ClassCostAnalysisFn(2016)
+;
+go
+
 /* 2. Create a function and save as EmpHistoryFn. 
 Kim needs to remove obsolete data from the Hudson database. 
 First, she asks you to identify all employees who no longer work for Aragon Pharmacy. 
