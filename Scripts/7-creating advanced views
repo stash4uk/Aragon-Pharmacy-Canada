@@ -93,7 +93,23 @@ Provide this information for her. Be certain to provide an appropriate name
 for the column with the result and to show the ages in descending order. 
 Include the job title and format the results so that they include one decimal place. 
 Also show the first name and last name together.*/
+create view Employee.EmployeeAgeView
+as
+select top 1000
+    concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+    EJT.Title as 'Job Title',
+    FORMAT(ABS(DATEDIFF(YEAR, EE.DOB, GETDATE())), 'N1') as 'Current Age'
+from Employee.tblEmployee as EE
+    inner join Employee.tblJobTitle as EJT
+        on EE.JobID = EJT.JobID
+order by [Current Age] desc
+;
+go
 
+select * 
+from Employee.EmployeeAgeView
+;
+go
 /* 8. Create a view and save it as AvgEmployeeAgeView. 
 Kim asks you to provide one other statistical analysis. Show the average age of employees by job title.
 */
