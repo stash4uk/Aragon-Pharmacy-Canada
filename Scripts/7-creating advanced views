@@ -58,7 +58,26 @@ who have not attended training as well as those who have.*/
 Kim also needs to identify employees whose CPR or defibrillator certification has expired, 
 depending on the time period she specifies. Show all employees whose Adult CPR, Child/Infant CPR, 
 or Defibrillator Use certification has expired in any specified time period.*/
+create view Employee.UpToDateView
+as
+select 
+    concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
+    EC.Description as 'Certification',
+    EEt.Date as 'Expired Date'
+from Employee.tblEmployeeTraining as EET
+    inner join Employee.tblClass as EC
+        on EET.ClassID = EC.ClassID
+    inner join Employee.tblEmployee as EE
+        on EET.EmpID = EE.EmpID
+where EC.Description in ('Adult CPR','Child/Infant CPR','Defibrillator Use')
+and abs(datediff(month, EEt.Date, GETDATE())) > 60
+;
+go
 
+select * 
+from Employee.UpToDateView
+;
+go
 /* 5. Create a view and save it as Top5HourlyRatesView. Mai Yan, manager of Aragon Pharmacy, 
 wants to identify the five current non-salaried employees who are earning the highest wages per hour. 
 These are the five employees who have been working for the pharmacy the longest or who have regularly received raises 
