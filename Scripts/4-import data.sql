@@ -1,4 +1,3 @@
-
 USE Aragon2020
 ;
 GO

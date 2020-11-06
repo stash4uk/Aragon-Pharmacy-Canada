@@ -2,7 +2,6 @@
 USE Aragon2020
 ;
 GO
-
             -- Artem Garanin part
 
 /***** Table No. 1 - Employee.tblClass ****/
