@@ -22,6 +22,11 @@ group by EE.PostalCode, EE.EmpFirst, EE.EmpMI, EE.EmpLast
 ;
 go
 
+select * 
+from Employee.DuplicatePostalCodesView
+;
+go
+
 --Version 2. Duplicate first 3 character of the Postal code
 create view Employee.DuplicatePostalCodesV2View
 as
@@ -34,6 +39,11 @@ in  (select left(PostalCode, 3)
     group by left(PostalCode, 3)
     having count(left(PostalCode, 3)) > 1)
 group by EE.PostalCode, EE.EmpFirst, EE.EmpMI, EE.EmpLast
+;
+go
+
+select * 
+from Employee.DuplicatePostalCodesV2View
 ;
 go
 /* 2. Create a view and save it as NoTrainingView. 
