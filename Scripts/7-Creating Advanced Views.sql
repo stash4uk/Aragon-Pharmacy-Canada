@@ -50,6 +50,24 @@ go
 A new policy at Aragon Pharmacy is that all employees must acquire and maintain certifications in adult, infant, 
 and child CPR and in using defibrillators. Kim asks you to identify employees who have not completed any certification training.*/
 
+create view Employee.NoTrainingView
+as
+select
+concat_ws(' ', E.EmpFirst, E.EmpLast) as 'Employee Name',
+coalesce(C.Description, 'No Certification') as 'Certification'
+from Employee.tblEmployee as E
+left outer join Employee.tblEmployeeTraining as ET
+on E.EmpID = ET.EmpID
+left outer join Employee.tblClass as C
+on ET.ClassID = C.ClassID
+where ET.ClassID is null
+;
+go
+
+select * from Employee.NoTrainingView
+;
+go
+
 /* 3. Create a view and save it as EmployeeTrainingView. 
 Kim also needs to list all employees and the classes they have taken. The results should include current employees 
 who have not attended training as well as those who have.*/
@@ -92,6 +110,25 @@ go
 wants to identify the five current non-salaried employees who are earning the highest wages per hour. 
 These are the five employees who have been working for the pharmacy the longest or who have regularly received raises 
 for their work. List the top five wage earners of all the current non-salaried employees.*/
+
+create view Employee.Top5HourlyRatesView
+as
+select top 5
+concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+HourlyRate as 'Hourly Rate',
+StartDate as 'Start Date',
+Review as 'Last Review'
+from Employee.tblEmployee
+where EndDate is null
+and
+HourlyRate > 0
+order by StartDate asc
+;
+go
+
+select * from Employee.Top5HourlyRatesView
+;
+go
 
 /* 6. Create a view and save it as MaxMinAvgHourlyRate. 
 To prepare for employee reviews, Kim needs to calculate the minimum, maximum, 
@@ -136,3 +173,20 @@ go
 /* 8. Create a view and save it as AvgEmployeeAgeView. 
 Kim asks you to provide one other statistical analysis. Show the average age of employees by job title.
 */
+
+create view Employee.AvgEmployeeAgeView
+as
+select 
+JT.Title as 'Job Title',
+avg(datediff(year, E.DOB, getdate())) as 'Employee Average Age'
+from Employee.tblEmployee as E
+inner join Employee.tblJobTitle as JT
+on E.JobID = JT.JobID
+group by 
+JT.Title 
+;
+go
+
+select * from Employee.AvgEmployeeAgeView
+;
+go

@@ -29,7 +29,7 @@ go
 create view Employee.EmployeeListView
 as
 select 
-count (E.EmpID) as 'No of employees',
+count(E.EmpID) as 'No of employees',
 JT.Title as 'Job Title'
 from Employee.tblEmployee as E
 inner join Employee.tblJobTitle as JT
@@ -90,7 +90,7 @@ non-salaried employees. Also include information that clearly identifies each em
 create view Employee.EmployeeHourlyRateView
 as
 select top 1000
-concat(' ', E.EmpFirst, E.EmpLast) as 'Employee Name',
+concat_ws(' ', E.EmpFirst, E.EmpLast) as 'Employee Name',
 JT.Title as 'Job Title', 
 E.HourlyRate as 'Hourly Rate'
 from Employee.tblEmployee as E
@@ -144,7 +144,7 @@ Kim asks you to produce a list of all employees who have been reprimanded at lea
 create view Employee.ReprimandListView
 as
 select
-concat(' ', EmpFirst, EmpLast) as 'Employee Name',
+concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
 Memo
 from Employee.tblEmployee
 where Memo like 'Reprimanded%'
