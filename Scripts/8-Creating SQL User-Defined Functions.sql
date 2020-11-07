@@ -131,3 +131,28 @@ with a column stating “Eligible” or “Not Eligible” in the results.*/
 /* 8. Create a function and save as Top3SalariesFn. Kim is meeting with Mai later today and needs to report 
 which salaried employees earn the top three salaries. Create a query in SQL view that lists all employees who earn the 
 top three salaries. Be certain to separate the SQL terms to make it more readable.*/
+
+if OBJECT_ID('Employee.Top3SalariesFn', 'IF') is not null
+	drop function Employee.Top3SalariesFn
+;
+go
+
+create function Employee.Top3SalariesFn
+(
+)
+returns table
+as
+return  (select top 3
+		concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+		Salary as 'Employee Salary'
+		from Employee.tblEmployee
+        where Salary > 0
+		order by Salary desc
+        )
+;
+go 
+
+select * 
+from Employee.Top3SalariesFn()
+;
+go
