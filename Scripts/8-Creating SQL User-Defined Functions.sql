@@ -118,6 +118,41 @@ As with qryObsoleteClasses, Kim will continue to use this query to remove obsole
 Set up the query so that it prompts her for the necessary criteria (parameter) before running. 
 Make sure the total number of records you deleted is the same as the number of records in tblEmployeeTrainingHistory.*/
 
+drop procedure if EXISTS Employee.DeleteClassesSp
+;  
+go
+
+create procedure
+   Employee.DeleteClassesSp
+ as
+	begin
+		delete from Employee.tblEmployeeTraining
+		where Date < '2017-01-01'
+	end
+;
+go
+
+execute Employee.DeleteClassesSp
+;
+go
+
+/* ------------- trigger 5 ------------- */
+if OBJECT_ID ('EmployeeTraining_Delete', 'TR') IS NOT NULL  
+   drop trigger EmployeeTraining_Delete;
+
+create trigger TR_EmployeeTraining_Delete
+on Employee.tblEmployeeTraining
+after delete
+as
+begin
+	set nocount on;
+	insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
+		select *
+		from deleted
+end
+;
+go
+
 /* 6. Create a function and save as TechnicianRaiseFn. 
 Kim recently met with Mai Yan, manager of Aragon Pharmacy, who authorized a 5% raise 
 for all current pharmacy technicians. Update the employee records for pharmacy technicians 
