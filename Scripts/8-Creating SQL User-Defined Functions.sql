@@ -42,6 +42,30 @@ Kim needs to remove obsolete data from the Hudson database.
 First, she asks you to identify all employees who no longer work for Aragon Pharmacy. 
 She then wants you to create a new history table with that data. Name the history table tblEmployeeHistory.*/
 
+if OBJECT_ID('Employee.EmpHistoryFn', 'IF') is not null
+	drop function Employee.EmpHistoryFn
+;
+go
+
+create function Employee.EmpHistoryFn
+(
+)
+returns table
+as
+return  
+		(select
+        concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+        EndDate as 'Employee Last Work Date'
+        from Employee.tblEmployee
+		where EndDate is not null
+        )
+;
+go 
+
+select * from Employee.EmpHistoryFn()
+;
+go
+
 /* 3. Create a function and save as EmployeeTrainingHistoryFn. 
 Kim also wants to remove records for classes that employees have completed 
 and for which their certification has already been updated. 
