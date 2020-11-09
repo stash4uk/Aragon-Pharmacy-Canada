@@ -188,6 +188,42 @@ Kim recently met with Mai Yan, manager of Aragon Pharmacy, who authorized a 5% r
 for all current pharmacy technicians. Update the employee records for pharmacy technicians 
 so that their pay rate includes this 5% raise.*/
 
+if OBJECT_ID('Employee.TechnicianRaiseFn', 'IF') is not null
+	drop function Employee.TechnicianRaiseFn
+;
+go
+
+create function Employee.TechnicianRaiseFn
+(
+)
+returns table
+as
+return  select
+           EE.EmpID,
+           EE.EmpFirst,
+           EE.EmpLast,
+		   EE.Salary,
+		   EJT.JobID,
+		   EJT.Title
+        from Employee.tblEmployee as EE
+            inner join Employee.tblJobTitle as EJT
+                on EE.JobId = EJT.JobId
+        where EJT.JobId =3
+			(update EE.Salary
+			set EE.Salary = EE.Salary * 0.05
+			from Employee.tblEmployee as EE
+			 inner join Employee.tblJobTitle as EJT
+			 on EE.JobId = EJT.JobId
+			  where EJT.JobId =3)
+      
+;
+go 
+
+select * 
+from Employee.TechnicianRaiseFn('')
+;
+go
+
 /* 7. Create a function and save as RetirementView. 
 Current Aragon Pharmacy employees are eligible for participation in a 401(k)-retirement plan after one year. 
 Identify each employee by full name and show whether they are eligible for the plan 
