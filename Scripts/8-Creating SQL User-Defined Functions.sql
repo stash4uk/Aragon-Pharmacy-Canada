@@ -74,6 +74,36 @@ Child/Infant CPR, and Child/Infant CPR Recertification—and that they attended 
 because certification achieved in these classes is now out of date in Canada. Create a history table 
 that contains this data and name the table tblEmployeeTrainingHistory.*/
 
+if OBJECT_ID('Employee.EmployeeTrainingHistoryFn', 'IF') is not null
+	drop function Employee.EmployeeTrainingHistoryFn
+;
+go
+
+create function Employee.EmployeeTrainingHistoryFn
+(
+	@Date as datetime
+)
+returns table
+as
+return  (select
+           EET.EmpID,
+           EET.Date,
+           EET.ClassID,
+           EC.Description
+        from Employee.tblEmployeeTraining as EET
+            inner join Employee.tblClass as EC
+                on EET.ClassID = EC.ClassID
+        where EC.ClassID = 1 or EC.ClassID = 2 or EC.ClassID = 3 or EC.ClassID = 6
+        and datediff(day, @Date, EET.Date) < 0
+        )
+;
+go 
+
+select * 
+from Employee.EmployeeTrainingHistoryFn('2017-01-01')
+;
+go
+
 /* 4. Create a function and save as ObsoleteClassesFn. 
 Kim checked your results and realizes that tblEmployeeTrainingHistory 
 should also include obsolete data for Defibrillator Use classes. 
