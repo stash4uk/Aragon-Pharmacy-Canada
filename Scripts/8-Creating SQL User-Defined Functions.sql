@@ -74,14 +74,19 @@ Child/Infant CPR, and Child/Infant CPR Recertification—and that they attended 
 because certification achieved in these classes is now out of date in Canada. Create a history table 
 that contains this data and name the table tblEmployeeTrainingHistory.*/
 
+
 if OBJECT_ID('Employee.EmployeeTrainingHistoryFn', 'IF') is not null
-	drop function Employee.EmployeeTrainingHistoryFn
+    drop function Employee.EmployeeTrainingHistoryFn
 ;
 go
 
 create function Employee.EmployeeTrainingHistoryFn
 (
-	@Date as datetime
+    @Date as datetime,
+    @Class1 as varchar(30),
+	@Class2 as varchar(30),
+	@Class3 as varchar(30),
+	@Class4 as varchar(30)
 )
 returns table
 as
@@ -93,14 +98,59 @@ return  (select
         from Employee.tblEmployeeTraining as EET
             inner join Employee.tblClass as EC
                 on EET.ClassID = EC.ClassID
-        where EC.ClassID = 1 or EC.ClassID = 2 or EC.ClassID = 3 or EC.ClassID = 6
+        where EC.Description in (@Class1,@Class2,@Class3,@Class4)
         and datediff(day, @Date, EET.Date) < 0
         )
 ;
 go 
 
 select * 
-from Employee.EmployeeTrainingHistoryFn('2017-01-01')
+from Employee.EmployeeTrainingHistoryFn('2017-01-01', 'Adult CPR','Adult CPR Recertification',
+'Child/Infant CPR','Child/Infant CPR Recertification')
+;
+go
+
+
+drop procedure if EXISTS Employee.InsertEmployeeTrainingHistoryFn
+;  
+go
+
+create procedure
+   Employee.InsertEmployeeTrainingHistorySP
+   @Date as datetime,
+   @Class1 as varchar(30),
+   @Class2 as varchar(30),
+   @Class3 as varchar(30),
+   @Class4 as varchar(30)
+ as
+    begin
+        insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
+        select EmpID, Date, ClassID
+        from Employee.EmployeeTrainingHistoryFn(@Date, @Class1,@Class2,@Class3,@Class4)
+    end
+;
+go
+    
+execute Employee.InsertEmployeeTrainingHistorySP 
+@Date = '2017-01-01', 
+@Class1 = 'Adult CPR',
+@Class2 = 'Adult CPR Recertification',
+@Class3 = 'Child/Infant CPR',
+@Class4 = 'Child/Infant CPR Recertification'
+;
+go
+
+select  * from Employee.tblEmployeeTrainingHistory
+;
+go
+select  * from Employee.tblEmployeeTraining
+;
+go
+
+TRUNCATE table Employee.tblEmployeeTrainingHistory
+;
+go
+TRUNCATE table Employee.tblEmployeeTraining
 ;
 go
 
