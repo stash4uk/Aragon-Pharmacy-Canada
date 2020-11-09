@@ -45,6 +45,10 @@ alter table Employee.tblEmployee with NOCHECK
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
 
+alter table Employee.tblEmployee
+drop constraint ck_StartDate_tblEmployee
+;
+go
 
 go
 alter table Employee.tblEmployee with NOCHECK
@@ -56,6 +60,12 @@ alter table Employee.tblEmployee with NOCHECK
 	add constraint ck_Review_tblEmployee check (Review like 
 	'[0-1][0-9]/[0-3][0-9]/[1-2][0-9][0-9][0-9]')
 ;
+
+alter table Employee.tblEmployee
+drop constraint ck_Review_tblEmployee
+;
+go
+
 go
 alter table Employee.tblEmployee
 	add constraint df_Province_tblEmployee default ('QC') for Province

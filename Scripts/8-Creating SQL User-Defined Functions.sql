@@ -113,13 +113,14 @@ so that it prompts her for the necessary criteria (parameter) before running.
 Defibrillator Use certifications before 1/1/2017 are no longer valid.*/
 
 if OBJECT_ID('Employee.ObsoleteClassesFn', 'IF') is not null
-	drop function Employee.ObsoleteClassesFn
+    drop function Employee.ObsoleteClassesFn
 ;
 go
 
 create function Employee.ObsoleteClassesFn
 (
-	@Date as datetime
+    @Date as datetime,
+    @Class as varchar(30)
 )
 returns table
 as
@@ -131,16 +132,55 @@ return  (select
         from Employee.tblEmployeeTraining as EET
             inner join Employee.tblClass as EC
                 on EET.ClassID = EC.ClassID
-        where EC.Description = 'Defibrillator Use'
+        where EC.Description = @Class
         and datediff(day, @Date, EET.Date) < 0
         )
 ;
 go 
 
 select * 
-from Employee.ObsoleteClassesFn('2017-01-01')
+from Employee.ObsoleteClassesFn('2017-01-01', 'Defibrillator Use')
 ;
 go
+
+drop procedure if EXISTS Employee.InsertObsoleteClassesSp
+;  
+go
+
+create procedure
+   Employee.InsertObsoleteClassesSp
+   @Date as datetime,
+   @Class as varchar(30)
+ as
+    begin
+        insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
+        select EmpID, Date, ClassID
+        from Employee.ObsoleteClassesFn(@Date, @Class)
+    end
+;
+go
+    
+execute Employee.InsertObsoleteClassesSp 
+@Date = '2017-01-01', 
+@Class = 'Defibrillator Use'
+;
+go
+
+select  * from Employee.tblEmployeeTrainingHistory
+;
+go
+select  * from Employee.tblEmployeeTraining
+;
+go
+
+TRUNCATE table Employee.tblEmployeeTrainingHistory
+;
+go
+TRUNCATE table Employee.tblEmployeeTraining
+;
+go
+
+
 
 /* 5. Create a function and save as DeleteClassesView. 
 Verify that tblEmployeeTrainingHistory includes all the obsolete classes. Delete the now archived records from tblEmployeeTraining. 
@@ -179,6 +219,32 @@ begin
 	insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
 		select *
 		from deleted
+end
+;
+go
+
+-- Version 2
+if OBJECT_ID ('Employee.EmployeeTraining_Delete_TR', 'TR') IS NOT NULL  
+   drop trigger Employee.EmployeeTraining_Delete_TR
+;
+go
+
+select * from sysobjects where name = 'EmployeeTraining_Delete_TR'
+;
+go
+
+create trigger EmployeeTraining_Delete_TR
+on Employee.tblEmployeeTrainingHistory
+after insert
+as
+begin
+    set nocount on;
+    PRINT '**********Transferred Rows***************'
+    SELECT * from inserted
+    delete from Employee.tblEmployeeTraining
+    where EmpID in (select EmpID from inserted) 
+    and Date in (select Date from inserted) 
+    and ClassID in (select ClassID from inserted)
 end
 ;
 go
@@ -228,6 +294,44 @@ go
 Current Aragon Pharmacy employees are eligible for participation in a 401(k)-retirement plan after one year. 
 Identify each employee by full name and show whether they are eligible for the plan 
 with a column stating “Eligible” or “Not Eligible” in the results.*/
+
+
+if OBJECT_ID('Employee.RetirementViewFn', 'IF') is not null
+    drop function Employee.RetirementViewFn
+;
+go
+
+create function Employee.RetirementViewFn
+(
+)
+returns table
+as
+return  
+        (select
+        concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+        StartDate as 'Employee Start Date',
+        'Eligible' as 'Retirement Plan Status'
+        from Employee.tblEmployee
+        where abs(datediff(day, StartDate, GETDATE())) > 365
+        union 
+        select
+        concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+        StartDate as 'Employee Start Date',
+        'Not Eligible' as 'Retirement Plan Status'
+        from Employee.tblEmployee
+        where abs(datediff(day, StartDate, GETDATE())) < 365
+        )
+;
+go 
+
+select * from Employee.RetirementViewFn()
+;
+go
+
+select * from Employee.tblEmployee
+;
+go
+
 
 /* 8. Create a function and save as Top3SalariesFn. Kim is meeting with Mai later today and needs to report 
 which salaried employees earn the top three salaries. Create a query in SQL view that lists all employees who earn the 
