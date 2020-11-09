@@ -48,7 +48,8 @@ go
 Finally, Kim wants to know who was the first employee hired by Aragon Pharmacy, and who was the most recent. 
 Organize the data in tblEmployee so that you can easily answer Kim’s question.*/
 
-CREATE VIEW [Employee.FirstEmployeeHiredListView] AS 
+CREATE view Employee.FirstEmployeeHiredListView 
+AS 
 select concat_ws(' ', EmpFirst, EmpMI + '.', EmpLast) as 'Employee', StartDate as 'Hired date'
 from Employee.tblEmployee
 where StartDate = (select top 1 StartDate
@@ -110,7 +111,8 @@ would also be helpful as she prepares for her meeting. List only the highest, lo
 and average pay rates for non-salaried employees. Make sure that the average calculation does not include zero values 
 for salaried employees.*/
 
-CREATE VIEW [Employee.HourlyRateAnalysisView] AS 
+CREATE VIEW Employee.HourlyRateAnalysisView 
+AS 
 select max(HourlyRate) as 'Max hourly rate',
 min(HourlyRate) as 'Min hourly rate', AVG(HourlyRate) as 'Average pay rates'
 from Employee.tblEmployee where HourlyRate > 0
@@ -161,8 +163,9 @@ Kim asks you to identify employees who started working between January 1, 2019 a
 ranked so the most recent start date is first.*/
 
 
-CREATE VIEW [Employee.StartDateListView] AS 
-select EmpID, EmpFirst, EmpLast, StartDate 
+CREATE VIEW [Employee.StartDateListView] 
+AS 
+select top 1000 EmpID, EmpFirst, EmpLast, StartDate 
 from Employee.tblEmployee
 where StartDate between '2019/01/01' and  '2020/01/01'
 order by StartDate desc
