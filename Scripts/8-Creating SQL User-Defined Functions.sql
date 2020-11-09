@@ -351,7 +351,7 @@ returns table
 as
 return  
         (select
-        concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
+        concat_ws(' ', EmpFirst, EmpMI + '.', EmpLast) as 'Employee Name',
         StartDate as 'Employee Start Date',
         'Eligible' as 'Retirement Plan Status'
         from Employee.tblEmployee
