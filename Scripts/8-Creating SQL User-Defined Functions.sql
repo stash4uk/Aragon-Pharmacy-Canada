@@ -139,7 +139,7 @@ return  (select
 go 
 
 select * 
-from Employee.ObsoleteClassesFn('2017-01-01', 'Adult CPR')
+from Employee.ObsoleteClassesFn('2017-01-01', 'Defibrillator Use')
 ;
 go
 
@@ -162,7 +162,7 @@ go
     
 execute Employee.InsertObsoleteClassesSp 
 @Date = '2017-01-01', 
-@Class = 'Adult CPR'
+@Class = 'Defibrillator Use'
 ;
 go
 
