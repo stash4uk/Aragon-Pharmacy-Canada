@@ -461,4 +461,9 @@ INSERT INTO Prescription.tblRefill VALUES
     go
 
 
+-- 1. update Employee Start Date
+update Employee.tblEmployee
+set StartDate = dateAdd(year, 9, StartDate)
+;
+go
 

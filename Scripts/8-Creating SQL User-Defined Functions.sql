@@ -139,7 +139,7 @@ return  (select
 go 
 
 select * 
-from Employee.ObsoleteClassesFn('2017-01-01', 'Defibrillator Use')
+from Employee.ObsoleteClassesFn('2017-01-01', 'Adult CPR')
 ;
 go
 
@@ -162,7 +162,7 @@ go
     
 execute Employee.InsertObsoleteClassesSp 
 @Date = '2017-01-01', 
-@Class = 'Defibrillator Use'
+@Class = 'Adult CPR'
 ;
 go
 
@@ -176,6 +176,7 @@ go
 TRUNCATE table Employee.tblEmployeeTrainingHistory
 ;
 go
+
 TRUNCATE table Employee.tblEmployeeTraining
 ;
 go
@@ -254,42 +255,34 @@ Kim recently met with Mai Yan, manager of Aragon Pharmacy, who authorized a 5% r
 for all current pharmacy technicians. Update the employee records for pharmacy technicians 
 so that their pay rate includes this 5% raise.*/
 
-if OBJECT_ID('Employee.TechnicianRaiseFn', 'IF') is not null
-	drop function Employee.TechnicianRaiseFn
-;
+drop procedure if EXISTS Employee.TechnicianRaiseSp
+;  
 go
 
-create function Employee.TechnicianRaiseFn
-(
-)
-returns table
-as
-return  select
-           EE.EmpID,
-           EE.EmpFirst,
-           EE.EmpLast,
-		   EE.Salary,
-		   EJT.JobID,
-		   EJT.Title
-        from Employee.tblEmployee as EE
-            inner join Employee.tblJobTitle as EJT
-                on EE.JobId = EJT.JobId
-        where EJT.JobId =3
-			(update EE.Salary
-			set EE.Salary = EE.Salary * 0.05
+create procedure
+   Employee.TechnicianRaiseSp
+   @Percent as float,
+   @Title as varchar(30)
+ as
+    begin
+        update Employee.tblEmployee
+        set HourlyRate += (HourlyRate * @Percent)/100
 			from Employee.tblEmployee as EE
-			 inner join Employee.tblJobTitle as EJT
-			 on EE.JobId = EJT.JobId
-			  where EJT.JobId =3)
-      
+			    inner join Employee.tblJobTitle as EJT
+			        on EE.JobId = EJT.JobId
+			where EJT.Title = @Title
+    end
 ;
-go 
-
-select * 
-from Employee.TechnicianRaiseFn('')
+go
+    
+execute Employee.TechnicianRaiseSp
+@Percent = 5, 
+@Title = 'Technician'
 ;
 go
 
+SELECT * from Employee.tblEmployee;
+go
 /* 7. Create a function and save as RetirementView. 
 Current Aragon Pharmacy employees are eligible for participation in a 401(k)-retirement plan after one year. 
 Identify each employee by full name and show whether they are eligible for the plan 
@@ -331,6 +324,7 @@ go
 select * from Employee.tblEmployee
 ;
 go
+
 
 
 /* 8. Create a function and save as Top3SalariesFn. Kim is meeting with Mai later today and needs to report 
