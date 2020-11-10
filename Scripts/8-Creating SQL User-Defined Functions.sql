@@ -194,7 +194,6 @@ execute Employee.InsertEmployeeTrainingHistorySP
 @Class2 = 'Adult CPR Recertification',
 @Class3 = 'Child/Infant CPR',
 @Class4 = 'Child/Infant CPR Recertification'
-
 ;
 go
 
