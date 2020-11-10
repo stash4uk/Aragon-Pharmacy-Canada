@@ -83,10 +83,10 @@ go
 create function Employee.EmployeeTrainingHistoryFn
 (
     @Date as datetime,
-    @Class1 as varchar(30),
-	@Class2 as varchar(30),
-	@Class3 as varchar(30),
-	@Class4 as varchar(30)
+    @Class1 as varchar(40),
+	@Class2 as varchar(40),
+	@Class3 as varchar(40),
+	@Class4 as varchar(40)
 )
 returns table
 as
@@ -111,6 +111,11 @@ from Employee.EmployeeTrainingHistoryFn('2017-01-01', 'Adult CPR','Adult CPR Rec
 go
 
 
+select * from Employee.tblClass
+select * from Employee.tblEmployeeTraining
+
+
+
 drop procedure if EXISTS Employee.InsertEmployeeTrainingHistoryFn
 ;  
 go
@@ -118,10 +123,10 @@ go
 create procedure
    Employee.InsertEmployeeTrainingHistorySP
    @Date as datetime,
-   @Class1 as varchar(30),
-   @Class2 as varchar(30),
-   @Class3 as varchar(30),
-   @Class4 as varchar(30)
+   @Class1 as varchar(40),
+   @Class2 as varchar(40),
+   @Class3 as varchar(40),
+   @Class4 as varchar(40)
  as
     begin
         insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
@@ -141,6 +146,7 @@ execute Employee.InsertEmployeeTrainingHistorySP
 go
 
 select  * from Employee.tblEmployeeTrainingHistory
+order by ClassID
 ;
 go
 select  * from Employee.tblEmployeeTraining
@@ -170,7 +176,7 @@ go
 create function Employee.ObsoleteClassesFn
 (
     @Date as datetime,
-    @Class as varchar(30)
+    @Class as varchar(40)
 )
 returns table
 as
@@ -200,7 +206,7 @@ go
 create procedure
    Employee.InsertObsoleteClassesSp
    @Date as datetime,
-   @Class as varchar(30)
+   @Class as varchar(40)
  as
     begin
         insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
@@ -220,6 +226,7 @@ select  * from Employee.tblEmployeeTrainingHistory
 ;
 go
 select  * from Employee.tblEmployeeTraining
+order by ClassID
 ;
 go
 
@@ -249,6 +256,7 @@ create procedure
 	begin
 		delete from Employee.tblEmployeeTraining
 		where Date < '2017-01-01'
+        and ClassID = (select ClassID from Employee.tblEmployeeTraining join Employee.tblClass where  )
 	end
 ;
 go
