@@ -484,3 +484,28 @@ select *
 from Employee.Top3SalariesFn()
 ;
 go
+
+/* 9. What proportion of the Pharmacy customers are members of each health plan? */
+if OBJECT_ID('Customer.HealthPlanProportionFn', 'IF') is not null
+	drop function Customer.HealthPlanProportionFn
+;
+go
+
+create function Customer.HealthPlanProportionFn
+(
+)
+returns table
+as
+return 
+    (select coalesce(PlanID, 'Without Plan') as 'Health plan',
+    count(CustID) as 'No of Customers', 
+    (count(CustID)*100)/(select count(*) from Customer.tblCustomer) as 'Proportion %'
+    from Customer.tblCustomer
+    group by PlanID)
+;
+go 
+
+select * 
+from Customer.HealthPlanProportionFn()
+;
+go
