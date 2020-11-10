@@ -497,11 +497,11 @@ create function Customer.HealthPlanProportionFn
 returns table
 as
 return 
-    (select coalesce(PlanID, 'Without Plan') as 'Health plan',
+    (select iif (GROUPING(PlanID) = 1, coalesce(PlanID, 'Total'), coalesce(PlanID, 'Without Plan'))  as 'Health plan',
     count(CustID) as 'No of Customers', 
     (count(CustID)*100)/(select count(*) from Customer.tblCustomer) as 'Proportion %'
     from Customer.tblCustomer
-    group by PlanID)
+    group by PlanID with rollup)
 ;
 go 
 
