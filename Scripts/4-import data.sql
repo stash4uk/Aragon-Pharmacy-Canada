@@ -467,3 +467,8 @@ set StartDate = dateAdd(year, 9, StartDate)
 ;
 go
 
+-- 2. delete EmpID 7 from Prescriptions.tblRefill
+delete from Prescription.tblRefill
+where EmpID = 7
+;
+go

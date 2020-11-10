@@ -52,7 +52,7 @@ create table Employee.tblEmployee
     Province nchar(2) not null, -- Provinces are abbreviated using two uppercase letters.
     PostalCode nvarchar(7) not null, -- Postal codes in Canada have the following format: uppercase letter, number, uppercase letter, space, number, uppercase letter, number (for example, T6H 8U7)
     JobID int not null, -- Job identification number (Foreign key JobID in  table Employee.tblJobTitle)
-    Memo ntext null, -- Memo to store miscellaneous information about the employee, such as being part time or bilingual.
+    Memo nvarchar(300) null, -- Memo to store miscellaneous information about the employee, such as being part time or bilingual.
     Phone nvarchar(15) null, -- Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
     Cell nvarchar(15) null, -- Cell Phone Number. Should store 15 characters in the format of (###) ###-####. Area code entry is required.
     Salary decimal(15,2) null, -- Annual Salary
