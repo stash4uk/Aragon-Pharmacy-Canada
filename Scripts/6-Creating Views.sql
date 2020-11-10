@@ -5,6 +5,10 @@ GO
 /* 1. Create a view and save it as PharmacistListView. 
 Kim needs quick answers to three questions. First, she needs to know how many pharmacists are listed in the tblEmployee table. 
 Filter the data in the tblEmployee table to answer Kim’s question.*/
+if OBJECT_ID('Employee.PharmacistListView', 'V') is not null
+	drop view Employee.PharmacistListView
+;
+go
 
 create view Employee.PharmacistListView
 as
@@ -25,12 +29,16 @@ go
 /* 2. Create a view and save it as EmployeeListView.
  Next, Kim wants to know how many records in tblEmployee are for pharmacists, owners, or managers. 
  Refilter the data in tblEmployee to answer Kim’s second question.*/
+if OBJECT_ID('Employee.EmployeeListView', 'V') is not null
+	drop view Employee.EmployeeListView
+;
+go
 
 create view Employee.EmployeeListView
 as
 select 
-count(E.EmpID) as 'No of employees',
-JT.Title as 'Job Title'
+JT.Title as 'Job Title',
+count(E.EmpID) as 'No of employees'
 from Employee.tblEmployee as E
 inner join Employee.tblJobTitle as JT
 on E.JobID = JT.JobID
@@ -47,10 +55,15 @@ go
 /* 3. Create a view and save it as FirstEmployeeHiredListView. 
 Finally, Kim wants to know who was the first employee hired by Aragon Pharmacy, and who was the most recent. 
 Organize the data in tblEmployee so that you can easily answer Kim’s question.*/
+if OBJECT_ID('Employee.FirstEmployeeHiredListView', 'V') is not null
+	drop view Employee.FirstEmployeeHiredListView
+;
+go
 
-CREATE VIEW Employee.FirstEmployeeHiredListView AS 
+CREATE view Employee.FirstEmployeeHiredListView 
+AS 
 select concat_ws(' ', EmpFirst, EmpMI + '.', EmpLast) as 'Employee', StartDate as 'Hired date'
-from Employee.tblEmployee 
+from Employee.tblEmployee
 where StartDate = (select top 1 StartDate
 from Employee.tblEmployee
 order by StartDate asc)
@@ -61,15 +74,19 @@ order by StartDate desc)
 go
 
 select * 
-from Employee.FirstEmployeeHiredListView
+from Employee.FirstEmployeeHiredListView 
 ;
 go
 
 /* 4. Create a view and save it as EmployeePhoneListView. 
 To help Kim call employees when she needs a substitute, create an alphabetical phone list 
 of Aragon employees and their phone numbers.*/
+if OBJECT_ID('Employee.EmployeePhoneListView', 'V') is not null
+	drop view Employee.EmployeePhoneListView
+;
+go
 
-create view Employee.EmployeeListView
+create view Employee.EmployeePhoneListView
 as
 select top 1000
     concat_ws(' ', EE.EmpFirst, EE.EmpMI + '.', EE.EmpLast) as 'Employee',
@@ -81,7 +98,7 @@ order by EE.EmpFirst, EE.EmpLast
 go
 
 select * 
-from Employee.EmployeeListView
+from Employee.EmployeePhoneListView
 ;
 go
 
@@ -91,6 +108,10 @@ to review the wages paid to employees so they can budget for upcoming pay raises
 Kim wants to check the hourly rates paid to employees. List the wages for employees who are 
 paid according to their hourly rate, ranked from highest to lowest, to display the full range of pay for current, 
 non-salaried employees. Also include information that clearly identifies each employee.*/
+if OBJECT_ID('Employee.EmployeeHourlyRateView', 'V') is not null
+	drop view Employee.EmployeeHourlyRateView
+;    
+go
 
 create view Employee.EmployeeHourlyRateView
 as
@@ -114,21 +135,30 @@ go
 would also be helpful as she prepares for her meeting. List only the highest, lowest, 
 and average pay rates for non-salaried employees. Make sure that the average calculation does not include zero values 
 for salaried employees.*/
+if OBJECT_ID('Employee.HourlyRateAnalysisView', 'V') is not null
+	drop view Employee.HourlyRateAnalysisView
+;    
+go
 
-CREATE VIEW Employee.HourlyRateAnalysisView AS 
+create view Employee.HourlyRateAnalysisView 
+as 
 select max(HourlyRate) as 'Max hourly rate',
 min(HourlyRate) as 'Min hourly rate', AVG(HourlyRate) as 'Average pay rates'
 from Employee.tblEmployee where HourlyRate > 0
 ;
 go
 
-select * from Employee.HourlyRateAnalysisView
+select *
+from Employee.HourlyRateAnalysisView
 ;
 go
-
 /* 7. Create a view and save it as SpeakSpanishView. Kim wants to schedule employees 
 so that at least one Spanish-speaking employee is working each shift. Produce a list of current employees at Aragon Pharmacy 
 who speak Spanish.*/
+if OBJECT_ID('Employee.SpeakSpanishView', 'V') is not null
+	drop view Employee.SpeakSpanishView
+;
+go
 
 create view Employee.SpeakSpanishView
 as
@@ -149,6 +179,10 @@ go
 /* 8. Create a view and save it as ReprimandListView. To prepare for employee reviews, 
 Kim asks you to produce a list of all employees who have been reprimanded at least once. 
 (Hint: Look for keywords in the Memo/Comments field.)*/
+if OBJECT_ID('Employee.ReprimandListView', 'V') is not null
+	drop view Employee.ReprimandListView
+;
+go
 
 create view Employee.ReprimandListView
 as
@@ -156,7 +190,7 @@ select
 concat_ws(' ', EmpFirst, EmpLast) as 'Employee Name',
 Memo
 from Employee.tblEmployee
-where Memo like 'Reprimanded%'
+where Memo like '%Reprimanded%'
 ;
 go
 
@@ -167,17 +201,22 @@ go
 /* 9. Create a view and save it as StartDateListView. Kim has analyzed employment data and discovered 
 that those who have been working for one to three years are most likely to accept employment elsewhere. 
 Kim asks you to identify employees who started working between January 1, 2019 and January 1, 2020, 
-ranked so the most recent start date is first...*/
+ranked so the most recent start date is first.*/
+if OBJECT_ID('Employee.StartDateListView', 'V') is not null
+	drop view Employee.StartDateListView
+;
+go
 
-
-CREATE VIEW Employee.StartDateListView AS 
-select EmpID, EmpFirst as 'First name', EmpLast as 'Last name', StartDate as 'Start Date'
+create view Employee.StartDateListView
+as 
+select top 1000 EmpID, EmpFirst, EmpLast, StartDate 
 from Employee.tblEmployee
 where StartDate between '2019/01/01' and  '2020/01/01'
 order by StartDate desc
 ;
 go
 
-select * from Employee.StartDateListView
+select *
+from Employee.StartDateListView
 ;
 go
