@@ -50,7 +50,7 @@ Organize the data in tblEmployee so that you can easily answer Kim’s question.
 
 CREATE VIEW Employee.FirstEmployeeHiredListView AS 
 select concat_ws(' ', EmpFirst, EmpMI + '.', EmpLast) as 'Employee', StartDate as 'Hired date'
-from Employee.tblEmployee
+from Employee.tblEmployee 
 where StartDate = (select top 1 StartDate
 from Employee.tblEmployee
 order by StartDate asc)
@@ -171,7 +171,7 @@ ranked so the most recent start date is first...*/
 
 
 CREATE VIEW Employee.StartDateListView AS 
-select EmpID, EmpFirst, EmpLast, StartDate 
+select EmpID, EmpFirst as 'First name', EmpLast as 'Last name', StartDate as 'Start Date'
 from Employee.tblEmployee
 where StartDate between '2019/01/01' and  '2020/01/01'
 order by StartDate desc

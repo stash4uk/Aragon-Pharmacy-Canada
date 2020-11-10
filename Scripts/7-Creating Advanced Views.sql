@@ -72,7 +72,7 @@ go
 Kim also needs to list all employees and the classes they have taken. The results should include current employees 
 who have not attended training as well as those who have.*/
 
-CREATE VIEW [Employee.EmployeeTrainingView] 
+CREATE VIEW Employee.EmployeeTrainingView
 AS 
 select EE.EmpID as 'Employee ID', EE.EmpFirst as 'First Name', EE.EmpLast as 'Last Name', coalesce(EET.classId, '0') as 'Class ID',
 coalesce(EC.Description, 'Not attended') as 'Class Description'
@@ -81,6 +81,10 @@ right join Employee.tblEmployee as EE on EET.EmpID = EE.EmpID)
 left join Employee.tblClass as EC on EET.classId = EC.classId)
  ;
  go
+
+select * from Employee.EmployeeTrainingView
+;
+go
 
 /* 4. Create a view and save it as UpToDateView. 
 Kim also needs to identify employees whose CPR or defibrillator certification has expired, 
@@ -134,12 +138,12 @@ go
 To prepare for employee reviews, Kim needs to calculate the minimum, maximum, 
 and average hourly rates for each job category. Provide this information for her.*/
 
-CREATE VIEW [Employee.MaxMinAvgHourlyRate] AS 
+CREATE VIEW Employee.MaxMinAvgHourlyRate AS 
 select
 EE.JobID as 'Job ID',
 EJT.Title as 'Job Title',
-max(EE.HourlyRate) as 'Max hourly rate',
-min(EE.HourlyRate) as 'Min hourly rate',
+MAX(EE.HourlyRate) as 'Max hourly rate',
+MIN(EE.HourlyRate) as 'Min hourly rate',
 AVG(EE.HourlyRate) as 'Average hourly rate'
 from Employee.tblEmployee as EE
 inner join Employee.tblJobTitle as EJT   on EE.JobID = EJT.JobID
@@ -147,6 +151,9 @@ group by EE.JobID, EJT.Title
 ;
 go
 
+select * from Employee.MaxMinAvgHourlyRate
+;
+go
 /* 7. Create a view and save it as EmployeeAge. 
 Mai is considering offering life insurance as an employee benefit and needs to know the current age of all employees. 
 Provide this information for her. Be certain to provide an appropriate name 
