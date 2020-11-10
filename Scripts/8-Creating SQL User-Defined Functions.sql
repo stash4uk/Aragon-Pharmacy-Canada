@@ -66,6 +66,63 @@ select * from Employee.EmpHistoryFn()
 ;
 go
 
+if OBJECT_ID ('Employee_Delete', 'TR') IS NOT NULL  
+   drop trigger Employee_Delete;
+   go
+
+create trigger TR_Employee_Delete
+on Employee.tblEmployee
+after delete
+as
+begin
+	set nocount on;
+	insert into Employee.tblEmployeeHistory
+		select *
+		from deleted
+end
+;
+go
+
+drop procedure if EXISTS Employee.DeleteEmployeeSp
+;  
+go
+
+create procedure
+   Employee.DeleteEmployeeSp
+   
+ as
+	begin		
+		
+		delete from Employee.tblEmployee
+		where EndDate is not null
+		
+	end
+;
+go
+
+alter table Prescription.tblRefill
+drop constraint fk_tblRefill_tblEmployee
+;
+go
+
+execute Employee.DeleteEmployeeSp
+;
+go
+
+alter table Prescription.tblRefill
+add constraint fk_tblRefill_tblEmployee foreign key (EmpID)
+		references Employee.tblEmployee (EmpID)
+;
+go
+
+select * from Employee.tblEmployee
+select * from Employee.tblEmployeeHistory
+
+
+
+
+
+
 /* 3. Create a function and save as EmployeeTrainingHistoryFn. 
 Kim also wants to remove records for classes that employees have completed 
 and for which their certification has already been updated. 
@@ -246,21 +303,43 @@ go
 
 create procedure
    Employee.DeleteClassesSp
- as
-	begin
-		delete from Employee.tblEmployeeTraining
-		where Date < '2017-01-01'
-	end
+   @Date as datetime,
+   @Class1 as varchar(40),
+   @Class2 as varchar(40),
+   @Class3 as varchar(40),
+   @Class4 as varchar(40),
+   @Class5 as varchar(40)
+as
+begin				
+	delete from Employee.tblEmployeeTraining
+	where Date < @Date
+	and ClassID in	
+		(
+		select ET.ClassID
+		from Employee.tblEmployeeTraining as ET
+		inner join Employee.tblClass as C
+		on ET.ClassID = C.ClassID
+		where C.Description in
+		(@Class1, @Class2, @Class3, @Class4, @Class5)
+		)		
+end
 ;
 go
 
 execute Employee.DeleteClassesSp
+@Date = '2017-01-01', 
+@Class1 = 'Adult CPR',
+@Class2 = 'Adult CPR Recertification',
+@Class3 = 'Child/Infant CPR',
+@Class4 = 'Child/Infant CPR Recertification',
+@Class5 = 'Defibrillator Use'
 ;
 go
 
 /* ------------- trigger 5 ------------- */
 if OBJECT_ID ('EmployeeTraining_Delete', 'TR') IS NOT NULL  
    drop trigger EmployeeTraining_Delete;
+   go
 
 create trigger TR_EmployeeTraining_Delete
 on Employee.tblEmployeeTraining
