@@ -140,10 +140,10 @@ go
 create function Employee.EmployeeTrainingHistoryFn
 (
     @Date as datetime,
-    @Class1 as varchar(30),
-	@Class2 as varchar(30),
-	@Class3 as varchar(30),
-	@Class4 as varchar(30)
+    @Class1 as varchar(40),
+	@Class2 as varchar(40),
+	@Class3 as varchar(40),
+	@Class4 as varchar(40)
 )
 returns table
 as
@@ -175,10 +175,10 @@ go
 create procedure
    Employee.InsertEmployeeTrainingHistorySP
    @Date as datetime,
-   @Class1 as varchar(30),
-   @Class2 as varchar(30),
-   @Class3 as varchar(30),
-   @Class4 as varchar(30)
+   @Class1 as varchar(40),
+   @Class2 as varchar(40),
+   @Class3 as varchar(40),
+   @Class4 as varchar(40)
  as
     begin
         insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
@@ -227,7 +227,7 @@ go
 create function Employee.ObsoleteClassesFn
 (
     @Date as datetime,
-    @Class as varchar(30)
+    @Class as varchar(40)
 )
 returns table
 as
@@ -257,7 +257,7 @@ go
 create procedure
    Employee.InsertObsoleteClassesSp
    @Date as datetime,
-   @Class as varchar(30)
+   @Class as varchar(40)
  as
     begin
         insert into Employee.tblEmployeeTrainingHistory (EmpID, Date, ClassID)
