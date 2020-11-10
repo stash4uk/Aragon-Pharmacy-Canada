@@ -167,7 +167,7 @@ go
 /* 9. Create a view and save it as StartDateListView. Kim has analyzed employment data and discovered 
 that those who have been working for one to three years are most likely to accept employment elsewhere. 
 Kim asks you to identify employees who started working between January 1, 2019 and January 1, 2020, 
-ranked so the most recent start date is first.*/
+ranked so the most recent start date is first...*/
 
 
 CREATE VIEW Employee.StartDateListView AS 
